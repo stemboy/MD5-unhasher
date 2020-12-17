@@ -10,6 +10,8 @@ possibleLetters = "".join([config["password_character_types"][name]
 
 
 def loop_digit(current_str, place, pws, outer=False):
+    processes = list()
+
     for letter in possibleLetters:
         current_str[place - 1] = letter
 
@@ -19,16 +21,26 @@ def loop_digit(current_str, place, pws, outer=False):
 
         else:
             if place == config["password_creation"]["length_for_new_process"] + 1:
-                p = Process(target=loop_digit, args=(current_str, place - 1, pws))
-                p.start()
+
                 if possibleLetters.index(letter) == len(possibleLetters)-1:
-                    p.join()
+                    p = Process(target=loop_digit, args=(current_str, place - 1, pws), kwargs={"outer": True})
+                    p.start()
+
+                else:
+                    p = Process(target=loop_digit, args=(current_str, place - 1, pws))
+                    p.start()
+
+                processes.append(p)
+
 
             else:
                 loop_digit(current_str, place - 1, pws)
 
         if outer and config["development"]["minor_logging"]:
             print("Outer letter maker at", possibleLetters.index(letter)+1, "in", len(possibleLetters))
+
+    for p in processes:
+        p.join()
 
 
 
