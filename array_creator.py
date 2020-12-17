@@ -13,7 +13,7 @@ def loop_digit(current_str, place, pws, outer=False):
 
         if place == 1:
             pw = "".join(_letter for _letter in current_str)
-            pws[hashlib.md5(pw.encode())] = pw
+            pws[hashlib.md5(pw.encode()).hexdigest()] = pw
 
         else:
             loop_digit(current_str, place - 1, pws)
