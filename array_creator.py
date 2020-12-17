@@ -1,4 +1,5 @@
 import json
+import time
 
 config = json.load(open("config.json", "r"))
 
@@ -28,12 +29,16 @@ def create():
         print("Generating passwords with", pwd_length, "letters")
         print()
 
+        start_time = time.time()
+
         current_pwd = ["□" for i in range(pwd_length)]
         pswds = list()
         loop_digit(current_pwd, pwd_length, pswds, outer=True)
 
+        end_time = time.time()
+
         print()
-        print("Created", len(pswds), "passwords")
+        print("Created", len(pswds), "passwords in", end_time-start_time, "seconds")
 
         print()
 
