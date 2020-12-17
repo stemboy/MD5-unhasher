@@ -9,5 +9,8 @@
     "uppercase": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
     "numbers": "0123456789",
     "special": "()[]{};:,.!?\"'/\\|_+-=*@$£%&^ "
+  },
+  "development": {
+    "minor_logging": false
   }
 }

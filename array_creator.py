@@ -19,7 +19,7 @@ def loop_digit(current_str, place, pws, outer=False):
         else:
             loop_digit(current_str, place - 1, pws)
 
-        if outer:
+        if outer and config["development"]["minor_logging"]:
             print("Outer letter maker at", possibleLetters.index(letter)+1, "in", len(possibleLetters))
 
 
