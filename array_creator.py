@@ -1,6 +1,7 @@
 import hashlib
 import json
 import time
+from multiprocessing import Process
 
 from config import config
 
@@ -17,10 +18,18 @@ def loop_digit(current_str, place, pws, outer=False):
             pws[hashlib.md5(pw.encode()).hexdigest()] = pw
 
         else:
-            loop_digit(current_str, place - 1, pws)
+            if place == config["password_creation"]["length_for_new_process"] + 1:
+                p = Process(target=loop_digit, args=(current_str, place - 1, pws))
+                p.start()
+                if possibleLetters.index(letter) == len(possibleLetters)-1:
+                    p.join()
+
+            else:
+                loop_digit(current_str, place - 1, pws)
 
         if outer and config["development"]["minor_logging"]:
             print("Outer letter maker at", possibleLetters.index(letter)+1, "in", len(possibleLetters))
+
 
 
 def create():
