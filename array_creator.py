@@ -1,4 +1,5 @@
 import hashlib
+import json
 import time
 
 from config import config
@@ -23,6 +24,7 @@ def loop_digit(current_str, place, pws, outer=False):
 
 
 def create():
+    total_start_time = time.time()
     print("Possible Letters:", possibleLetters)
     print("\n")
 
@@ -43,6 +45,20 @@ def create():
         print("\n")
 
         all_pws.update(pws)
+
+    with open('MD5_hashes_to_pws.json', 'w') as outfile:
+        start_time = time.time()
+        json.dump(all_pws, outfile, indent=4)
+        end_time = time.time()
+
+        print("Saved", len(all_pws), "passwords in", end_time - start_time, "seconds")
+        print("\n")
+
+    total_end_time = time.time()
+
+    print("Generated passwords of", config["password_content"]["min_length"], "to",
+          config["password_content"]["max_length"], "length with the characters '" + str(possibleLetters) + "' in",
+          total_end_time-total_start_time, "seconds")
 
 
 
