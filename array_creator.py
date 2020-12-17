@@ -18,7 +18,7 @@ def loop_digit(current_str, place, pswds, outer=False):
             pswds.append("".join(l for l in current_str))
 
         if outer:
-            print("Outer letter maker at", letter, "in", possibleLetters)
+            print("Outer letter maker at", possibleLetters.index(letter)+1, "in", len(possibleLetters))
 
 
 def create():
