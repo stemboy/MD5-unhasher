@@ -30,7 +30,6 @@ def create():
 
     for pwd_length in range(config["password_content"]["min_length"], config["password_content"]["max_length"] + 1):
         print("Generating passwords with", pwd_length, "letters")
-        print()
 
         start_time = time.time()
 
@@ -40,13 +39,10 @@ def create():
 
         end_time = time.time()
 
-        print(pws)
         print("Created", len(pws), "passwords in", end_time-start_time, "seconds")
         print("\n")
 
-        all_pws = all_pws + pws
-
-    print(all_pws)
+        all_pws.update(pws)
 
 
 
