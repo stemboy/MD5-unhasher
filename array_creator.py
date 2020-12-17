@@ -56,7 +56,7 @@ def create():
 
     total_end_time = time.time()
 
-    print("Generated passwords of", config["password_content"]["min_length"], "to",
+    print("Generated", len(all_pws), "passwords of", config["password_content"]["min_length"], "to",
           config["password_content"]["max_length"], "length with the characters '" + str(possibleLetters) + "' in",
           total_end_time-total_start_time, "seconds")
 
