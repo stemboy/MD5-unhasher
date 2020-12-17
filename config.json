@@ -1,7 +1,7 @@
 {
   "password_content": {
     "min_length": 1,
-    "max_length": 1,
+    "max_length": 3,
     "character_types": ["lowercase", "uppercase", "numbers", "special"]
   },
   "password_character_types": {
@@ -9,5 +9,8 @@
     "uppercase": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
     "numbers": "0123456789",
     "special": "()[]{};:,.!?\"'/\\|_+-=*@$£%&^ "
+  },
+  "development": {
+    "minor_logging": false
   }
 }

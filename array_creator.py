@@ -1,4 +1,5 @@
 import hashlib
+import json
 import time
 
 from config import config
@@ -13,16 +14,17 @@ def loop_digit(current_str, place, pws, outer=False):
 
         if place == 1:
             pw = "".join(_letter for _letter in current_str)
-            pws[hashlib.md5(pw.encode())] = pw
+            pws[hashlib.md5(pw.encode()).hexdigest()] = pw
 
         else:
             loop_digit(current_str, place - 1, pws)
 
-        if outer:
+        if outer and config["development"]["minor_logging"]:
             print("Outer letter maker at", possibleLetters.index(letter)+1, "in", len(possibleLetters))
 
 
 def create():
+    total_start_time = time.time()
     print("Possible Letters:", possibleLetters)
     print("\n")
 
@@ -30,7 +32,6 @@ def create():
 
     for pwd_length in range(config["password_content"]["min_length"], config["password_content"]["max_length"] + 1):
         print("Generating passwords with", pwd_length, "letters")
-        print()
 
         start_time = time.time()
 
@@ -40,13 +41,24 @@ def create():
 
         end_time = time.time()
 
-        print(pws)
         print("Created", len(pws), "passwords in", end_time-start_time, "seconds")
         print("\n")
 
-        all_pws = all_pws + pws
+        all_pws.update(pws)
 
-    print(all_pws)
+    with open('MD5_hashes_to_pws.json', 'w') as outfile:
+        start_time = time.time()
+        json.dump(all_pws, outfile, indent=4)
+        end_time = time.time()
+
+        print("Saved", len(all_pws), "passwords in", end_time - start_time, "seconds")
+        print("\n")
+
+    total_end_time = time.time()
+
+    print("Generated", len(all_pws), "passwords of", config["password_content"]["min_length"], "to",
+          config["password_content"]["max_length"], "length with the characters '" + str(possibleLetters) + "' in",
+          total_end_time-total_start_time, "seconds")
 
 
 
