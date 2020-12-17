@@ -2,10 +2,7 @@
   "password_content": {
     "min_length": 6,
     "max_length": 6,
-    "lower_case": true,
-    "upper_case": true,
-    "numbers": true,
-    "special": true
+    "character_types": ["lowercase", "uppercase", "numbers", "special"]
   },
   "password_character_types": {
     "lowercase": "abcdefghijklmnopqrstuvwxyz",
