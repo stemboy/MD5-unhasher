@@ -1,0 +1,10 @@
+{
+  "password": {
+    "min_length": 6,
+    "max_length": 16,
+    "lower_case": true,
+    "upper_case": true,
+    "numbers": true,
+    "special_characters": "()[]{};:,.!?\"'/\\|_+-=*@$%&^"
+  }
+}
