@@ -26,6 +26,8 @@ def create():
     print("Possible Letters:", possibleLetters)
     print("\n")
 
+    all_pwds = {}
+
     for pwd_length in range(config["password_content"]["min_length"], config["password_content"]["max_length"] + 1):
         print("Generating passwords with", pwd_length, "letters")
         print()
@@ -41,6 +43,10 @@ def create():
         print(pwds)
         print("Created", len(pwds), "passwords in", end_time-start_time, "seconds")
         print("\n")
+
+        all_pwds = all_pwds + pwds
+
+    print(all_pwds)
 
 
 
