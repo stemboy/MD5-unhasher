@@ -1,3 +1,4 @@
+import hashlib
 import time
 
 from config import config
@@ -6,15 +7,16 @@ possibleLetters = "".join([config["password_character_types"][name]
                            for name in config["password_content"]["character_types"]])
 
 
-def loop_digit(current_str, place, pswds, outer=False):
+def loop_digit(current_str, place, pwds, outer=False):
     for letter in possibleLetters:
         current_str[place - 1] = letter
 
-        if place != 1:
-            loop_digit(current_str, place - 1, pswds)
+        if place == 1:
+            pwd = "".join(l for l in current_str)
+            pwds[hashlib.md5(pwd.encode())] = pwd
 
         else:
-            pswds.append("".join(l for l in current_str))
+            loop_digit(current_str, place - 1, pwds)
 
         if outer:
             print("Outer letter maker at", possibleLetters.index(letter)+1, "in", len(possibleLetters))
@@ -31,16 +33,18 @@ def create():
         start_time = time.time()
 
         current_pwd = ["□" for i in range(pwd_length)]
-        pswds = list()
-        loop_digit(current_pwd, pwd_length, pswds, outer=True)
+        pwds = {}
+        loop_digit(current_pwd, pwd_length, pwds, outer=True)
 
         end_time = time.time()
 
-        print()
-        print("Created", len(pswds), "passwords in", end_time-start_time, "seconds")
+        print(pwds)
+        print("Created", len(pwds), "passwords in", end_time-start_time, "seconds")
         print("\n")
 
 
 
 
-create()
+
+if __name__ == '__main__':
+    create()
