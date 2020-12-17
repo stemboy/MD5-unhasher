@@ -1,10 +1,16 @@
 {
-  "password": {
+  "password_content": {
     "min_length": 6,
-    "max_length": 16,
+    "max_length": 6,
     "lower_case": true,
     "upper_case": true,
     "numbers": true,
-    "special_characters": "()[]{};:,.!?\"'/\\|_+-=*@$%&^"
+    "special": true
+  },
+  "password_character_types": {
+    "lowercase": "abcdefghijklmnopqrstuvwxyz",
+    "uppercase": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "numbers": "0123456789",
+    "special": "()[]{};:,.!?\"'/\\|_+-=*@$£%&^"
   }
 }
