@@ -39,8 +39,9 @@ def create():
 
         print()
         print("Created", len(pswds), "passwords in", end_time-start_time, "seconds")
+        print("\n")
 
-        print()
+
 
 
 create()
