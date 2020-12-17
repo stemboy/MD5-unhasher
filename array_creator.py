@@ -1,7 +1,6 @@
-import json
 import time
 
-config = json.load(open("config.json", "r"))
+from config import config
 
 possibleLetters = "".join([config["password_character_types"][name]
                            for name in config["password_content"]["character_types"]])
