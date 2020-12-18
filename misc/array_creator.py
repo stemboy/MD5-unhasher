@@ -67,7 +67,7 @@ def create():
 
         all_pws.update(pws)
 
-    with open('../MD5_hashes_to_pws.json', 'w') as outfile:
+    with open('../md5_hashes_to_pws.json', 'w') as outfile:
         start_time = time.time()
         json.dump(all_pws, outfile, indent=4)
         end_time = time.time()
