@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.core.window import Window
 from kivy.lang import Builder
 
+
 from Gui.ScreenManager import ScreenManager
 from Gui.homeScreen import HomeScreen
 from Gui.hashingScreen import HashingScreen

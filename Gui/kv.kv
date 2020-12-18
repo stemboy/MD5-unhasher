@@ -27,6 +27,23 @@
 
         on_state: app.root.header_buttons_selected_change(*args)
 
+<EncryptionBox@DropDown>:
+
+    Button:
+        text: "md5"
+        height: 44
+        size_hint_y: None
+        on_release: root.select("md5 hash")
+
+    Button:
+        text: "SHA-1"
+        height: 44
+        size_hint_y: None
+        on_release: root.select("SHA-1")
+
+
+
+
 
 <HomeScreen>:
     Header:
@@ -61,6 +78,11 @@
         pos_hint: {"y": 0}
         size_hint: 1, 0.9
 
+        EncryptionBox:
+            pos_hint: {"x": 0.4, "y":0.4}
+            size_hint: 0.2, 0.1
+
+
         TextInput:
             pos_hint: {"x": 0, "y": 0}
             size_hint: 0.4, 1
@@ -69,17 +91,29 @@
 
             border: (2,2,2,2)
 
-            hint_text: "md5 string"
+            hint_text: "Decrypt"
 
             multiline: False
 
     TextInput:
-        pos_hint: {"x":0.6, "y":0}
+        pos_hint: {"x": 0.6, "y": 0}
         size_hint: 0.4, 0.9
 
         border: (2,2,2,2)
 
         hint_text: "Encrypt"
+
+    Button:
+        pos_hint: {"x":0.4, "y":0.5}
+        size_hint: 0.2, 0.1
+
+        border: (10,10,10,10)
+
+        text: "Activate"
+
+
+
+
 
 
 
