@@ -1,4 +1,5 @@
 from kivy.app import App
+from kivy.core.window import Window
 from kivy.lang import Builder
 
 from Gui.ScreenManager import ScreenManager
@@ -8,6 +9,7 @@ from Gui.hashingScreen import HashingScreen
 
 class DecryptApp(App):
     def build(self):
+        Window.minimum_width, Window.minimum_height = 500, 300
         return ScreenManager()
 
 
