@@ -28,3 +28,6 @@ else:
           "                       --help               - Show this page",
           "                       --gui-only           - Run only the gui",
           "                       --array-create-only  - Run the array creator only", sep="\n")
+    print("Running the program as normal")
+
+    # Nothing here, no program in place yet
