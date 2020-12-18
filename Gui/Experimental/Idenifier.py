@@ -2,6 +2,8 @@ import uuid
 import socket
 import getpass
 
+import re
+
 def sync():
     device_name = socket.gethostname()
     loc_ip = socket.gethostbyname(device_name)
@@ -15,5 +17,6 @@ def sync():
     print("IP is:", loc_ip)
     print("MacAddress is:", mac_addr)
     print("Username is:", user)
+
 
 sync()
