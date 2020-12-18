@@ -3,7 +3,7 @@ import json
 import time
 from multiprocessing import Process
 
-from config import config
+from misc.config import config
 
 possibleLetters = "".join([config["password_character_types"][name]
                            for name in config["password_content"]["character_types"]])
@@ -67,7 +67,7 @@ def create():
 
         all_pws.update(pws)
 
-    with open('MD5_hashes_to_pws.json', 'w') as outfile:
+    with open('../md5_hashes_to_pws.json', 'w') as outfile:
         start_time = time.time()
         json.dump(all_pws, outfile, indent=4)
         end_time = time.time()
@@ -86,4 +86,7 @@ def create():
 
 
 if __name__ == '__main__':
+    import os
+    os.chdir(os.path.split(os.path.dirname(globals()["__file__"]))[0])
+
     create()
