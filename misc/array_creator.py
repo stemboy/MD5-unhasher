@@ -86,4 +86,7 @@ def create():
 
 
 if __name__ == '__main__':
+    import os
+    os.chdir(os.path.split(os.path.dirname(globals()["__file__"]))[0])
+
     create()
