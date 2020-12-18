@@ -5,6 +5,7 @@ from kivy.lang import Builder
 from Gui.ScreenManager import ScreenManager
 from Gui.homeScreen import HomeScreen
 from Gui.hashingScreen import HashingScreen
+from Gui.decryptScreen import DecryptScreen
 
 
 class DecryptApp(App):

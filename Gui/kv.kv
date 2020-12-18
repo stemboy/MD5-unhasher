@@ -19,12 +19,22 @@
 
         on_state: app.root.header_buttons_selected_change(*args)
 
+    ToggleButton:
+        id: DecryptScreenButton
+        text: "Decrypt"
+        group: "Header"
+        state: "normal"
+
+        on_state: app.root.header_buttons_selected_change(*args)
+
+
 <HomeScreen>:
     Header:
         id: Header
 
         pos_hint: {"top": 1}
         size_hint: 1, 0.1
+
 
     Label:
         text: "Home Screen Testing Labale"
@@ -36,8 +46,20 @@
         pos_hint: {"top": 1}
         size_hint: 1, 0.1
 
+
     Label:
         text: "Hashing Screen Testing Labale"
+
+<DecryptScreen>:
+    Header:
+        id: Header
+
+        pos_hint: {"top": 1}
+        size_hint: 1, 0.1
+
+
+    TextInput:
+        hint_text: "Input Text Here"
 
 <ScreenManager>:
     transition: FadeTransition()
@@ -47,3 +69,6 @@
 
     HashingScreen:
         name: "Hashing"
+
+    DecryptScreen:
+        name: "Decrypt"
