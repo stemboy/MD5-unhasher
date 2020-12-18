@@ -57,9 +57,14 @@
         pos_hint: {"top": 1}
         size_hint: 1, 0.1
 
+    FloatLayout:
+        pos_hint: {"y": 0}
+        size_hint: 1, 0.9
 
-    TextInput:
-        hint_text: "Input Text Here"
+        TextInput:
+            pos_hint: {"x": 0, "y": 0}
+            size_hint: 0.4, 1
+
 
 <ScreenManager>:
     transition: FadeTransition()
