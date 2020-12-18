@@ -3,17 +3,17 @@ import socket
 import getpass
 
 def sync():
-    devicename = socket.gethostname()
-    loc_ip = socket.gethostbyname(devicename)
-    macaddr = hex(uuid.getnode())
+    device_name = socket.gethostname()
+    loc_ip = socket.gethostbyname(device_name)
+    mac_addr = hex(uuid.getnode())
     user = getpass.getuser()
     print("-" * 40)
     print("Debug test version")
     print("-" * 40)
 
-    print("Host name:", devicename)
+    print("Host name:", device_name)
     print("IP is:", loc_ip)
-    print("MacAddress is:", macaddr)
+    print("MacAddress is:", mac_addr)
     print("Username is:", user)
 
 sync()
