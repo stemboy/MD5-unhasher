@@ -12,5 +12,5 @@ class DecryptApp(App):
 
 
 if __name__ == "__main__":
-    Builder.load_file('screen_manager.kv')
+    Builder.load_file('kv.kv')
     DecryptApp().run()
