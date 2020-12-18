@@ -1,4 +1,4 @@
-from kivy.uix.screenmanager import Screen
+from Gui.screen import Screen
 
 
 class HashingScreen(Screen):

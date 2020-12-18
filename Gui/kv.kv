@@ -1,28 +1,43 @@
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+
 <Header@BoxLayout>:
     orientation: "horizontal"
 
     ToggleButton:
+        id: HomeScreenButton
         text: "Home"
         group: "Header"
         state: "down"
 
+        on_state: app.root.header_buttons_selected_change(*args)
+
     ToggleButton:
+        id: HashingScreenButton
         text: "Hashing"
         group: "Header"
+        state: "normal"
+
+        on_state: app.root.header_buttons_selected_change(*args)
 
 <HomeScreen>:
     Header:
+        id: Header
+
         pos_hint: {"top": 1}
         size_hint: 1, 0.1
 
 <HashingScreen>:
     Header:
+        id: Header
+
         pos_hint: {"top": 1}
         size_hint: 1, 0.1
 
 <ScreenManager>:
+    transition: FadeTransition()
+
     HomeScreen:
-        name: "HomeScreen"
+        name: "Home"
 
     HashingScreen:
-        name: "HashingScreen"
+        name: "Hashing"
