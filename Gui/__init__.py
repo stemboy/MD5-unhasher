@@ -9,7 +9,8 @@ from Gui.hashingScreen import HashingScreen
 
 class DecryptApp(App):
     def build(self):
-        Window.minimum_width, Window.minimum_height = 500, 300
+        Window.minimum_width, Window.minimum_height = "25cm", " 25cm"
+        Window.size = Window.minimum_width, Window.minimum_height
         return ScreenManager()
 
 
