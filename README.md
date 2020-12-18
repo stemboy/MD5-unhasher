@@ -10,4 +10,4 @@ md5-unhasher.py [Option]
 ```
 
 # How it works
-The code in [this file](stemboy/md5-unhasher/msic/array_creator.py) creates and array of strings and md5-hashes. The strings are made up of 91 characters that are lower and upper case, numbers and special characters. Then it encrypts them in md5 and saves them to an array with the md5 as the key and string as the value, this means that you can use a md5 hash to get the string that you didn't know before.
+The code in [this file](https://github.com/stemboy/md5-unhasher/blob/main/misc/array_creator.py) creates and array of strings and md5-hashes. The strings are made up of 91 characters that are lower and upper case, numbers and special characters. Then it encrypts them in md5 and saves them to an array with the md5 as the key and string as the value, this means that you can use a md5 hash to get the string that you didn't know before.
