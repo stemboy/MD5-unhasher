@@ -27,21 +27,33 @@
 
         on_state: app.root.header_buttons_selected_change(*args)
 
-<EncryptionBox@DropDown>:
+
+
+<EncryptionBox@BoxLayout>:
+    orientation: "vertical"
 
     Button:
-        text: "md5"
-        height: 44
+        id: btn
+        text: 'Press'
+        on_release: dropdown.open(self)
         size_hint_y: None
-        on_release: root.select("md5 hash")
+        height: '48dp'
 
-    Button:
-        text: "SHA-1"
-        height: 44
-        size_hint_y: None
-        on_release: root.select("SHA-1")
+    DropDown:
+        id: dropdown
+        on_select: btn.text = '{}'.format(args[1])
 
+        Button:
+            text: "md5"
+            size_hint_y: None
+            height: '48dp'
+            on_release: dropdown.select("md5 hash")
 
+        Button:
+            text: "SHA-1"
+            size_hint_y: None
+            height: '48dp'
+            on_release: dropdown.select("SHA-1")
 
 
 
