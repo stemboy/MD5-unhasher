@@ -1,14 +1,9 @@
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
 
-
-class ScreenManager(ScreenManager):
-    pass
-
-
-class Screen1(Screen):
-    pass
+from Gui.screenManager import ScreenManager
+from Gui.homeScreen import HomeScreen
+from Gui.hashingScreen import HashingScreen
 
 
 class DecryptApp(App):
@@ -17,5 +12,5 @@ class DecryptApp(App):
 
 
 if __name__ == "__main__":
-    Builder.load_file('kv.kv')
+    Builder.load_file('screen_manager.kv')
     DecryptApp().run()
