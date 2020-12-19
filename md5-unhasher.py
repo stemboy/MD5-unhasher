@@ -1,10 +1,15 @@
 import sys
 import os
+from multiprocessing import freeze_support
 
 os.chdir(os.path.dirname(globals()["__file__"]))
 os.environ["KIVY_NO_ARGS"] = "1"
 
 args = sys.argv
+
+
+freeze_support()
+
 
 if args[-1] == "--help":
     print("Usages md5-unhasher.py [Option]",
