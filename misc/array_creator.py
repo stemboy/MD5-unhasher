@@ -5,8 +5,8 @@ import time
 
 from misc.config import config
 
-possibleLetters = "".join([config["password_character_types"][name]
-                           for name in config["password_content"]["character_types"]])
+possibleCharacters = "".join([config["string_character_types"][name]
+                           for name in config["string_content"]["character_types"]])
 
 
 
@@ -17,30 +17,31 @@ def mapped_loop_digit(args):
 
 
 def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=False):
-    if place == config["password_creation"]["length_for_new_process"]:
+    if place == config["string_creation"]["length_for_new_process"]:
         current_strings = list()
 
 
 
-    for letter in possibleLetters:
-        current_str[place] = letter
+    for character in possibleCharacters:
+        current_str[place] = character
 
         if is_outer and config["development"]["minor_logging"]:
-            print("Outer letter maker at", possibleLetters.index(letter)+1, "in", len(possibleLetters))
+            print("Outer character maker at", possibleCharacters.index(character)+1, "in", len(possibleCharacters))
 
         elif is_pool and config["development"]["pool_minor_logging"]:
-            print("Outest in pool letter maker for process", multiprocessing.current_process()._identity, "at", possibleLetters.index(letter)+1, "in", len(possibleLetters))
+            print("Outest in pool character maker for process", multiprocessing.current_process()._identity,
+                  "at", possibleCharacters.index(character)+1, "in", len(possibleCharacters))
 
 
         if place == 0:
             #print(current_str)
-            string = "".join(_letter for _letter in current_str)
+            string = "".join(_character for _character in current_str)
             time.sleep(0.5)
             hashes.append(hashlib.md5(string.encode()).hexdigest())
             strings.append(string)
             #hashes[hashlib.md5(string.encode()).hexdigest()] = string
 
-        elif place == config["password_creation"]["length_for_new_process"]:
+        elif place == config["string_creation"]["length_for_new_process"]:
             current_strings.append(current_str.copy())
 
         else:
@@ -48,13 +49,13 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
 
 
 
-    if place == config["password_creation"]["length_for_new_process"]:
+    if place == config["string_creation"]["length_for_new_process"]:
         args = list()
         print("Starting a new pool")
         for string in current_strings:
             args.append([string, place - 1, strings, hashes])
 
-        with multiprocessing.Pool(processes=config["password_creation"]["processes"]) as pool:
+        with multiprocessing.Pool(processes=config["string_creation"]["processes"]) as pool:
             pool.map(mapped_loop_digit, args)
             print(pool._pool)
             pool.close()
@@ -65,7 +66,7 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
 
 def create():
     total_start_time = time.time()
-    print("Possible Letters:", possibleLetters)
+    print("Possible characters:", possibleCharacters)
     print("\n")
 
     last_len = 0
@@ -74,37 +75,35 @@ def create():
     all_strings = manager.list("")
     all_hashes = manager.list("")
 
-    for pwd_length in range(config["password_content"]["min_length"], config["password_content"]["max_length"] + 1):
-        print("Generating passwords with", pwd_length, "letters")
+    for string_length in range(config["string_content"]["min_length"], config["string_content"]["max_length"] + 1):
+        print("Generating strings with", string_length, "characters")
 
         start_time = time.time()
 
-        current_string = ["□" for _ in range(pwd_length)]
-        loop_digit(current_string, pwd_length - 1, all_strings, all_hashes, is_outer=True)
+        current_string = ["□" for _ in range(string_length)]
+        loop_digit(current_string, string_length - 1, all_strings, all_hashes, is_outer=True)
 
         end_time = time.time()
 
-        print("Created", len(all_hashes)-last_len, "passwords in", end_time-start_time, "seconds")
+        print("Created", len(all_hashes)-last_len, "strings in", end_time-start_time, "seconds")
         print("\n")
 
         last_len = len(all_hashes)
 
-    with open('md5_hashes_to_hashes.json', 'w') as outfile:
+    with open('md5_hashes_to_strings.json', 'w') as outfile:
         start_time = time.time()
-        all_hashes_and_arrays = dict(zip(all_strings, all_hashes))
+        all_hashes_and_arrays = dict(zip(all_hashes, all_strings))
         all_hashes_and_arrays = {k: v for k, v in sorted(all_hashes_and_arrays.items(), key=lambda item: item[1])}
-        print(all_hashes_and_arrays)
-        print(type(all_hashes_and_arrays))
         json.dump(all_hashes_and_arrays, outfile, indent=4)
         end_time = time.time()
 
-        print("Saved", len(all_hashes_and_arrays), "passwords in", end_time - start_time, "seconds")
+        print("Saved and sorted", len(all_hashes_and_arrays), "strings in", end_time - start_time, "seconds")
         print("\n")
 
     total_end_time = time.time()
 
-    print("Generated", len(all_hashes), "passwords of", config["password_content"]["min_length"], "to",
-          config["password_content"]["max_length"], "length with the characters '" + str(possibleLetters) + "' in",
+    print("Generated and saved", len(all_hashes), "strings of", config["string_content"]["min_length"], "to",
+          config["string_content"]["max_length"], "length with the characters '" + str(possibleCharacters) + "' in",
           total_end_time-total_start_time, "seconds")
 
 

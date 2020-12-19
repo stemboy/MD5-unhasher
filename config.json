@@ -1,10 +1,10 @@
 {
-  "password_content": {
+  "string_content": {
     "min_length": 4,
     "max_length": 4,
     "character_types": ["numbers"]
   },
-  "password_character_types": {
+  "string_character_types": {
     "lowercase": "abcdefghijklmnopqrstuvwxyz",
     "uppercase": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
     "numbers": "12345",
@@ -14,7 +14,7 @@
     "minor_logging": true,
     "pool_minor_logging": true
   },
-  "password_creation": {
+  "string_creation": {
     "processes": 4,
     "length_for_new_process": 3
   }
