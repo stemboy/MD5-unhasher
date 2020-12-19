@@ -9,14 +9,19 @@ possibleLetters = "".join([config["password_character_types"][name]
                            for name in config["password_content"]["character_types"]])
 
 
+all_hashes = {}
+
+
 
 def mapped_loop_digit(args):
     loop_digit(*args, is_pool=True)
 
 
 def loop_digit(current_str, place, hashes, is_outer=False, is_pool=False):
+    global all_hashes
+
     if place == config["password_creation"]["length_for_new_process"]:
-        pool_items = list()
+        current_strings = list()
         """with multiprocessing.Pool(config["password_creation"]["processes"]) as pool:
             pool.map(mapped_loop_digit, [(current_str, place - 1, hashes) for i in range(91)])
             pool.join()"""
@@ -26,32 +31,34 @@ def loop_digit(current_str, place, hashes, is_outer=False, is_pool=False):
     for letter in possibleLetters:
         current_str[place] = letter
 
+        if is_outer and config["development"]["minor_logging"]:
+            print("Outer letter maker at", possibleLetters.index(letter)+1, "in", len(possibleLetters))
+
+        elif is_pool and config["development"]["pool_minor_logging"]:
+            print("Outest in pool letter maker for process", multiprocessing.current_process()._identity, "at", current_str, place, is_pool)
+
 
         if place == 0:
+            #print(current_str)
             string = "".join(_letter for _letter in current_str)
-            print(string)
             time.sleep(0.5)
             hashes[hashlib.md5(string.encode()).hexdigest()] = string
 
         elif place == config["password_creation"]["length_for_new_process"]:
-            pool_items.append((current_str, place - 1))
+            current_strings.append(current_str.copy())
 
         else:
             loop_digit(current_str, place - 1, hashes)
 
 
 
-        if is_outer and config["development"]["minor_logging"]:
-            print("Outer letter maker at", possibleLetters.index(letter)+1, "in", len(possibleLetters))
-
-
-
     if place == config["password_creation"]["length_for_new_process"]:
         args = list()
-        for item_args in pool_items:
-            args.append((item_args[0], item_args[1], hashes))
+        print(current_strings, "start start -----")
+        for string in current_strings:
+            args.append([string, place - 1, hashes])
 
-        with multiprocessing.Pool(processes=10) as pool:
+        with multiprocessing.Pool(processes=1) as pool:
             pool.map(mapped_loop_digit, args)
             pool.close()
             pool.join()
@@ -65,6 +72,7 @@ def create():
     print("\n")
 
     all_hashes = {}
+
     last_len = 0
 
     for pwd_length in range(config["password_content"]["min_length"], config["password_content"]["max_length"] + 1):

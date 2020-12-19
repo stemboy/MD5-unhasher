@@ -2,20 +2,20 @@
   "password_content": {
     "min_length": 4,
     "max_length": 4,
-    "character_types": ["lowercase"]
+    "character_types": ["numbers"]
   },
   "password_character_types": {
     "lowercase": "abcdefghijklmnopqrstuvwxyz",
     "uppercase": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-    "numbers": "0123456789",
+    "numbers": "12",
     "special": "()[]{};:,.!?\"'/\\|_+-=*@$£%&^ "
   },
   "development": {
-    "minor_logging": false,
+    "minor_logging": true,
     "pool_minor_logging": true
   },
   "password_creation": {
-    "processes": 10,
+    "processes": 1,
     "length_for_new_process": 3
   }
 }
