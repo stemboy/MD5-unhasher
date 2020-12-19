@@ -1,9 +1,7 @@
+from shutil import copyfile
 import appdirs
 import os
 from multiprocessing import freeze_support
-
-
-
 
 if __name__ == "__main__":
     freeze_support()
@@ -14,8 +12,7 @@ if __name__ == "__main__":
         os.mkdir(user_data_dir)
 
     if not os.path.exists(os.path.join(user_data_dir, "config.ini")):
-        open(os.path.join(user_data_dir, "config.ini"), "w")
-
+        copyfile("default_config.ini", os.path.join(user_data_dir, "config.ini"))
 
     os.chdir(os.path.dirname(globals()["__file__"]))
     os.environ["KIVY_NO_ARGS"] = "1"
@@ -25,32 +22,40 @@ if __name__ == "__main__":
     os.environ["KCFG_KIVY_LOG_LEVEL"] = "info"
 
     import sys
+
     args = sys.argv
 
     import kivy
-
+    from kivy.logger import Logger
 
     if args[-1] == "--help":
-        print("Usages md5-unhasher.py [Option]",
-              "                       --help               - Show this page",
-              "                       --gui-only           - Run only the gui",
-              "                       --array-create-only  - Run the array creator only", sep="\n")
+        Logger.info("Help: \n" +
+                    "Usages md5-unhasher.py [Option]\n" +
+                    "                       --help               - Show this page\n" +
+                    "                       --gui-only           - Run only the gui\n" +
+                    "                       --array-create-only  - Run the array creator only\n")
 
     elif args[-1] == "--gui-only":
+        Logger.info("md5-unhasher: Running with the gui only")
+
         from Gui import DecryptApp
+
         app = DecryptApp()
         app.run()
 
     elif args[-1] == "--array-create-only":
+        Logger.info("md5-unhasher: Running the array creator only")
+
         from misc.array_creator import create
+
         create()
 
     else:
-        print("No arguments were given or the given arguments were not correct,",
-              "Usages md5-unhasher.py [Option]",
-              "                       --help               - Show this page",
-              "                       --gui-only           - Run only the gui",
-              "                       --array-create-only  - Run the array creator only", sep="\n")
+        Logger.warning("Arguments: No arguments were given or the given arguments were not correct,\n" +
+                       "Usages md5-unhasher.py [Option]\n" +
+                       "                       --help               - Show this page\n" +
+                       "                       --gui-only           - Run only the gui\n" +
+                       "                       --array-create-only  - Run the array creator only\n")
         print("Running the program as normal")
 
         # Nothing here, no program in place yet
