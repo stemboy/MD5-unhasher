@@ -7,7 +7,7 @@
   "password_character_types": {
     "lowercase": "abcdefghijklmnopqrstuvwxyz",
     "uppercase": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-    "numbers": "12",
+    "numbers": "12345",
     "special": "()[]{};:,.!?\"'/\\|_+-=*@$£%&^ "
   },
   "development": {
@@ -15,7 +15,7 @@
     "pool_minor_logging": true
   },
   "password_creation": {
-    "processes": 1,
+    "processes": 4,
     "length_for_new_process": 3
   }
 }
