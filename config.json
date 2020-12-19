@@ -15,7 +15,7 @@
     "pool_minor_logging": true
   },
   "string_creation": {
-    "processes": 26,
+    "processes": 10,
     "length_for_new_process": 3
   }
 }

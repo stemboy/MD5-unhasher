@@ -111,8 +111,6 @@ def create():
 
 
 if __name__ == '__main__':
-    multiprocessing.freeze_support()
-
     import os
     os.chdir(os.path.split(os.path.dirname(globals()["__file__"]))[0])
 
