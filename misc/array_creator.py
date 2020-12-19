@@ -58,7 +58,6 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
 
         with multiprocessing.Pool(processes=config["string_creation"]["processes"]) as pool:
             pool.map(mapped_loop_digit, args)
-            print(pool._pool)
             pool.close()
             pool.join()
 
