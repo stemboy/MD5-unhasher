@@ -9,10 +9,10 @@ class ConfigParser(Cp):
         value = super(ConfigParser, self).get(*args, **kwargs)
 
         if value.startswith("[s]"):
-            return str(value)
+            return str(value).replace("[s]", "")
 
         elif value.startswith("[i]"):
-            return int(value)
+            return int(str(value).replace("[i]", ""))
 
         elif value.startswith("[b]"):
             if value == "True":
