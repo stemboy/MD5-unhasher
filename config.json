@@ -1,8 +1,8 @@
 {
   "password_content": {
-    "min_length": 1,
+    "min_length": 4,
     "max_length": 4,
-    "character_types": ["lowercase", "uppercase", "numbers", "special"]
+    "character_types": ["lowercase"]
   },
   "password_character_types": {
     "lowercase": "abcdefghijklmnopqrstuvwxyz",
@@ -11,7 +11,8 @@
     "special": "()[]{};:,.!?\"'/\\|_+-=*@$£%&^ "
   },
   "development": {
-    "minor_logging": true
+    "minor_logging": false,
+    "pool_minor_logging": true
   },
   "password_creation": {
     "processes": 10,
