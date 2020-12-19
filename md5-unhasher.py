@@ -40,9 +40,9 @@ if __name__ == "__main__":
     elif args[-1] == "--gui-only":
         Logger.info("md5-unhasher: Running with the gui only")
 
-        from Gui import DecryptApp
+        from Gui import Md5_unhasher_app
 
-        app = DecryptApp()
+        app = Md5_unhasher_app()
         app.run()
 
     elif args[-1] == "--array-create-only":
