@@ -1,5 +1,7 @@
 import os
 
+from kivy import Logger
+
 
 def get():
     kv = ""
@@ -7,5 +9,7 @@ def get():
     for file in os.listdir("Gui/kv"):
         if file.endswith(".kv"):
             kv = kv + str(open(os.path.join("Gui", "kv", file), "r").read())
+
+    Logger.info("App: Located kv files")
 
     return kv
