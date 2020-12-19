@@ -37,7 +37,6 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
         if place == 0:
             #print(current_str)
             string = "".join(_character for _character in current_str)
-            time.sleep(0.5)
             hashes.append(hashlib.md5(string.encode()).hexdigest())
             strings.append(string)
             #hashes[hashlib.md5(string.encode()).hexdigest()] = string

@@ -2,7 +2,7 @@
   "string_content": {
     "min_length": 4,
     "max_length": 4,
-    "character_types": ["numbers"]
+    "character_types": ["lowercase", "uppercase","numbers","special"]
   },
   "string_character_types": {
     "lowercase": "abcdefghijklmnopqrstuvwxyz",
