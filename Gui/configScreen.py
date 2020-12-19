@@ -1,5 +1,4 @@
 from kivy.config import ConfigParser
-from kivy.uix.settings import Settings
 
 from Gui.screen import Screen
 
@@ -12,4 +11,11 @@ class ConfigScreen(Screen):
 
 
     def on_kv_post(self, *args):
-        self.ids["ConfigPannel"].add_json_panel('My custom panel', self.config, 'Gui/config_markdown/con1.json')
+        self.ids["ConfigPanel"].add_json_panel('String Content',
+                                               self.config, 'Gui/config_markdown/string_content.json')
+        self.ids["ConfigPanel"].add_json_panel('String Character Types',
+                                               self.config, 'Gui/config_markdown/string_character_types.json')
+        self.ids["ConfigPanel"].add_json_panel('String Creation',
+                                               self.config, 'Gui/config_markdown/string_creation.json')
+        self.ids["ConfigPanel"].add_json_panel('Development',
+                                               self.config, 'Gui/config_markdown/development.json')
