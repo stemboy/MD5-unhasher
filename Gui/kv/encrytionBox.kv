@@ -1,0 +1,25 @@
+<EncryptionBox@BoxLayout>:
+    orientation: "vertical"
+
+    Button:
+        id: btn
+        text: 'Press'
+        on_release: dropdown.open(self)
+        size_hint_y: None
+        height: '48dp'
+
+    DropDown:
+        id: dropdown
+        on_select: btn.text = '{}'.format(args[1])
+
+        Button:
+            text: "md5"
+            size_hint_y: None
+            height: '48dp'
+            on_release: dropdown.select("md5")
+
+        Button:
+            text: "SHA-1"
+            size_hint_y: None
+            height: '48dp'
+            on_release: dropdown.select("SHA-1")
