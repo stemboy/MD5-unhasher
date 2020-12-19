@@ -12,7 +12,8 @@ from Gui.configScreen import ConfigScreen
 
 class DecryptApp(App):
     def build(self):
-        Builder.load_file('Gui/kv.kv')
+        Builder.load_file('Gui/widgets.kv')
+        Builder.load_file('Gui/screens.kv')
         Window.minimum_width, Window.minimum_height = "25cm", " 25cm"
         Window.size = Window.minimum_width, Window.minimum_height
         return ScreenManager()

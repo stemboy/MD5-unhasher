@@ -1,0 +1,57 @@
+#: import Clock kivy.clock.Clock
+#: import toggleButtonSelect misc.functions.toggleButtonSelect
+
+
+<NavButton@ToggleButton>:
+    group: "Nav"
+    state: "normal"
+
+    on_state: app.root.nav_buttons_selected_change(*args)
+
+
+<Nav@BoxLayout>:
+    orientation: "horizontal"
+
+    NavButton:
+        id: HomeScreenButton
+        text: "Home"
+        on_parent: Clock.schedule_once(lambda *args: toggleButtonSelect(self), 0)
+
+    NavButton:
+        id: HashingScreenButton
+        text: "Hashing"
+
+    NavButton:
+        id: DecryptScreenButton
+        text: "Decrypt"
+
+    NavButton:
+        id: ConfigScreenButton
+        text: "Config"
+
+
+<EncryptionBox@BoxLayout>:
+    orientation: "vertical"
+
+    Button:
+        id: btn
+        text: 'Press'
+        on_release: dropdown.open(self)
+        size_hint_y: None
+        height: '48dp'
+
+    DropDown:
+        id: dropdown
+        on_select: btn.text = '{}'.format(args[1])
+
+        Button:
+            text: "md5"
+            size_hint_y: None
+            height: '48dp'
+            on_release: dropdown.select("md5")
+
+        Button:
+            text: "SHA-1"
+            size_hint_y: None
+            height: '48dp'
+            on_release: dropdown.select("SHA-1")
