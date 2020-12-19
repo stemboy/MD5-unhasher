@@ -7,7 +7,7 @@
   "string_character_types": {
     "lowercase": "abcdefghijklmnopqrstuvwxyz",
     "uppercase": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-    "numbers": "123456789",
+    "numbers": "0123456789",
     "special": "()[]{};:,.!?\"'/\\|_+-=*@$£%&^ "
   },
   "development": {
@@ -15,7 +15,7 @@
     "pool_minor_logging": true
   },
   "string_creation": {
-    "processes": 4,
+    "processes": 26,
     "length_for_new_process": 3
   }
 }

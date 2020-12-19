@@ -30,7 +30,8 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
 
         elif is_pool and config["development"]["pool_minor_logging"]:
             print("Outest in pool character maker for process", multiprocessing.current_process()._identity[0],
-                  "at", possibleCharacters.index(character)+1, "in", len(possibleCharacters))
+                  "at", possibleCharacters.index(character)+1, "in", len(possibleCharacters), "with character as",
+                  str(character) + ". Current string is", current_str)
 
 
         if place == 0:
