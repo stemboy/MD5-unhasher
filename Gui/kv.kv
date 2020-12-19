@@ -27,6 +27,14 @@
 
         on_state: app.root.header_buttons_selected_change(*args)
 
+    ToggleButton:
+        id: ConfigScreenButton
+        text: "Config"
+        group: "Header"
+        state: "normal"
+
+        on_state: app.root.header_buttons_selected_change(*args)
+
 
 
 <EncryptionBox@BoxLayout>:
@@ -131,19 +139,19 @@
 
         text: "Activate"
 
+<ConfigScreen>:
+    Header:
+        id: Header
+
+        pos_hint: {"top": 1}
+        size_hint: 1, 0.1
 
 
+    Label:
+        text: "CONFIG!"
 
-
-
-
-
-
-
-
-
-
-
+    Settings:
+        id: ConfigPannel
 
 
 <ScreenManager>:
@@ -157,3 +165,6 @@
 
     DecryptScreen:
         name: "Decrypt"
+
+    ConfigScreen:
+        name: "Config"

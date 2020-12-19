@@ -7,6 +7,7 @@ from Gui.ScreenManager import ScreenManager
 from Gui.homeScreen import HomeScreen
 from Gui.hashingScreen import HashingScreen
 from Gui.decryptScreen import DecryptScreen
+from Gui.configScreen import ConfigScreen
 
 
 class DecryptApp(App):

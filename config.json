@@ -1,6 +1,6 @@
 {
   "string_content": {
-    "min_length": 4,
+    "min_length": 1,
     "max_length": 4,
     "character_types": ["lowercase", "uppercase","numbers","special"]
   },
@@ -15,7 +15,7 @@
     "pool_minor_logging": true
   },
   "string_creation": {
-    "processes": 10,
+    "processes": 91,
     "length_for_new_process": 3
   }
 }
