@@ -1,39 +1,32 @@
 #: import FadeTransition kivy.uix.screenmanager.FadeTransition
+#: import Clock kivy.clock.Clock
+#: import toggleButtonSelect misc.functions.toggleButtonSelect
 
-<Header@BoxLayout>:
+<NavButton@ToggleButton>:
+    group: "Nav"
+    state: "normal"
+
+    on_state: app.root.nav_buttons_selected_change(*args)
+
+<Nav@BoxLayout>:
     orientation: "horizontal"
 
-    ToggleButton:
+    NavButton:
         id: HomeScreenButton
         text: "Home"
-        group: "Header"
-        state: "down"
+        on_parent: Clock.schedule_once(lambda *args: toggleButtonSelect(self), 0)
 
-        on_state: app.root.header_buttons_selected_change(*args)
-
-    ToggleButton:
+    NavButton:
         id: HashingScreenButton
         text: "Hashing"
-        group: "Header"
-        state: "normal"
 
-        on_state: app.root.header_buttons_selected_change(*args)
-
-    ToggleButton:
+    NavButton:
         id: DecryptScreenButton
         text: "Decrypt"
-        group: "Header"
-        state: "normal"
 
-        on_state: app.root.header_buttons_selected_change(*args)
-
-    ToggleButton:
+    NavButton:
         id: ConfigScreenButton
         text: "Config"
-        group: "Header"
-        state: "normal"
-
-        on_state: app.root.header_buttons_selected_change(*args)
 
 
 
@@ -66,8 +59,8 @@
 
 
 <HomeScreen>:
-    Header:
-        id: Header
+    Nav:
+        id: Nav
 
         pos_hint: {"top": 1}
         size_hint: 1, 0.1
@@ -77,8 +70,8 @@
         text: "Welcome! With this program you can mine or decrypt."
 
 <HashingScreen>:
-    Header:
-        id: Header
+    Nav:
+        id: Nav
 
         pos_hint: {"top": 1}
         size_hint: 1, 0.1
@@ -96,8 +89,8 @@
 
 
 <DecryptScreen>:
-    Header:
-        id: Header
+    Nav:
+        id: Nav
 
         pos_hint: {"top": 1}
         size_hint: 1, 0.1
@@ -140,8 +133,8 @@
             text: "Activate"
 
 <ConfigScreen>:
-    Header:
-        id: Header
+    Nav:
+        id: Nav
 
         pos_hint: {"top": 1}
         size_hint: 1, 0.1

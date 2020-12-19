@@ -6,7 +6,7 @@ class Screen(Screen):
         super(Screen, self).on_pre_enter(*args, **kwargs)
 
         try:
-            self.ids["Header"].ids[self.name + "ScreenButton"].state = "down"
+            self.ids["Nav"].ids[self.name + "ScreenButton"].state = "down"
         except KeyError:
             pass
 
