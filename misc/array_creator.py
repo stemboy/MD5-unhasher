@@ -81,11 +81,10 @@ def create():
     with open('md5_hashes_to_strings.json', 'w') as outfile:
         start_time = time.time()
         all_hashes_and_arrays = dict(zip(all_hashes, all_strings))
-        all_hashes_and_arrays = {k: v for k, v in sorted(all_hashes_and_arrays.items(), key=lambda item: item[1])}
         json.dump(all_hashes_and_arrays, outfile, indent=4)
         end_time = time.time()
 
-        print("Saved and sorted", len(all_hashes_and_arrays), "strings in", end_time - start_time, "seconds")
+        print("Saved", len(all_hashes_and_arrays), "strings in", end_time - start_time, "seconds")
         print("\n")
 
     total_end_time = time.time()
