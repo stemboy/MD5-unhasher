@@ -5,11 +5,8 @@ import time
 
 from misc.config import config
 
-possibleCharacters = "".join([config["string_character_types"][name]
-                           for name in config["string_content"]["character_types"]])
-
-
-
+possibleCharacters = "".join([config.get("string_character_types", name)
+                              for name in (str(config.get("string_content", "character_types")).split(","))])
 
 
 def mapped_loop_digit(args):
@@ -17,50 +14,41 @@ def mapped_loop_digit(args):
 
 
 def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=False):
-    if place == config["string_creation"]["length_for_new_process"]:
+    if place == config.get("string_creation", "length_for_new_process"):
         current_strings = list()
-
-
 
     for character in possibleCharacters:
         current_str[place] = character
 
-        if is_outer and config["development"]["minor_logging"]:
-            print("Outer character maker at", possibleCharacters.index(character)+1, "in", len(possibleCharacters))
+        if is_outer and config.get("development", "minor_logging"):
+            print("Outer character maker at", possibleCharacters.index(character) + 1, "in", len(possibleCharacters))
 
-        elif is_pool and config["development"]["pool_minor_logging"]:
+        elif is_pool and config.get("development", "pool_minor_logging"):
             print("Outest in pool character maker for process", multiprocessing.current_process()._identity[0],
-                  "at", possibleCharacters.index(character)+1, "in", len(possibleCharacters), "with character as",
+                  "at", possibleCharacters.index(character) + 1, "in", len(possibleCharacters), "with character as",
                   str(character) + ". Current string is", current_str)
 
-
         if place == 0:
-            #print(current_str)
             string = "".join(_character for _character in current_str)
             hashes.append(hashlib.md5(string.encode()).hexdigest())
             strings.append(string)
-            #hashes[hashlib.md5(string.encode()).hexdigest()] = string
 
-        elif place == config["string_creation"]["length_for_new_process"]:
+        elif place == config.get("string_creation", "length_for_new_process"):
             current_strings.append(current_str.copy())
 
         else:
             loop_digit(current_str, place - 1, strings, hashes)
 
-
-
-    if place == config["string_creation"]["length_for_new_process"]:
+    if place == config.get("string_creation", "length_for_new_process"):
         args = list()
         print("Starting a new pool")
         for string in current_strings:
             args.append([string, place - 1, strings, hashes])
 
-        with multiprocessing.Pool(processes=config["string_creation"]["processes"]) as pool:
+        with multiprocessing.Pool(processes=config.get("string_creation", "processes")) as pool:
             pool.map(mapped_loop_digit, args)
             pool.close()
             pool.join()
-
-
 
 
 def create():
@@ -74,7 +62,8 @@ def create():
     all_strings = manager.list("")
     all_hashes = manager.list("")
 
-    for string_length in range(config["string_content"]["min_length"], config["string_content"]["max_length"] + 1):
+    for string_length in range(config.get("string_content", "min_length"),
+                               config.get("string_content", "max_length") + 1):
         print("Generating strings with", string_length, "characters")
 
         start_time = time.time()
@@ -84,7 +73,7 @@ def create():
 
         end_time = time.time()
 
-        print("Created", len(all_hashes)-last_len, "strings in", end_time-start_time, "seconds")
+        print("Created", len(all_hashes) - last_len, "strings in", end_time - start_time, "seconds")
         print("\n")
 
         last_len = len(all_hashes)
@@ -102,15 +91,13 @@ def create():
     total_end_time = time.time()
 
     print("Generated and saved", len(all_hashes), "strings of", config["string_content"]["min_length"], "to",
-          config["string_content"]["max_length"], "length with the characters '" + str(possibleCharacters) + "' in",
-          total_end_time-total_start_time, "seconds")
-
-
-
+          config.get("string_content", "max_length"), "length with the characters '" + str(possibleCharacters) + "' in",
+          total_end_time - total_start_time, "seconds")
 
 
 if __name__ == '__main__':
     import os
+
     os.chdir(os.path.split(os.path.dirname(globals()["__file__"]))[0])
 
     create()
