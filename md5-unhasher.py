@@ -1,15 +1,33 @@
-import sys
+import appdirs
 import os
 from multiprocessing import freeze_support
+
+
 
 
 if __name__ == "__main__":
     freeze_support()
 
+    user_data_dir = str(os.path.join(appdirs.user_data_dir(), "md5-unhasher"))
+
+    if not os.path.exists(user_data_dir):
+        os.mkdir(user_data_dir)
+
+    if not os.path.exists(os.path.join(user_data_dir, "config.ini")):
+        open(os.path.join(user_data_dir, "config.ini"), "w")
+
+
     os.chdir(os.path.dirname(globals()["__file__"]))
     os.environ["KIVY_NO_ARGS"] = "1"
+    os.environ["KIVY_HOME"] = str(os.path.join(user_data_dir, "kivy"))
+    os.environ["KCFG_KIVY_LOG_NAME"] = "%y-%m-%d_%_.log"
+    os.environ["KCFG_KIVY_LOG_DIR"] = "../logs"
+    os.environ["KCFG_KIVY_LOG_LEVEL"] = "info"
 
+    import sys
     args = sys.argv
+
+    import kivy
 
 
     if args[-1] == "--help":

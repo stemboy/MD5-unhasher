@@ -8,3 +8,5 @@ numpy==1.19.4
 Pygments==2.7.3
 requests==2.25.1
 urllib3==1.26.2
+
+appdirs~=1.4.4
