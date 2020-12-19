@@ -8,16 +8,16 @@ class ConfigParser(Cp):
     def get(self, *args, **kwargs):
         value = super(ConfigParser, self).get(*args, **kwargs)
 
-        if value.startswith("[s]"):
-            return str(value).replace("[s]", "")
+        if value.startswith("[S]"):
+            return str(value).replace("[S]", "")
 
-        elif value.startswith("[i]"):
-            return int(str(value).replace("[i]", ""))
+        elif value.startswith("[I]"):
+            return int(str(value).replace("[I]", ""))
 
-        elif value.startswith("[b]"):
-            if value == "True":
+        elif value.startswith("[B]"):
+            if value == "true" or value == "True":
                 return True
-            elif value == "False":
+            elif value == "false" or value == "False":
                 return False
             else:
                 print("wtf, configparser wiered lol what")
@@ -31,9 +31,9 @@ class ConfigParser(Cp):
                     return float(value)
 
                 except ValueError:
-                    if value == "True":
+                    if value == "true" or value == "True":
                         return True
-                    elif value == "False":
+                    elif value == "false" or value == "False":
                         return False
                     else:
                         return str(value)
