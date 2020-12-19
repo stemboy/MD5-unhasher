@@ -5,8 +5,19 @@ import time
 
 from misc.config import config
 
-possibleCharacters = "".join([config.get("string_character_types", name)
-                              for name in (str(config.get("string_content", "character_types")).split(","))])
+possibleCharacters = ""
+
+
+if config.get("character_types", "lowercase"):
+    possibleCharacters = possibleCharacters + str(config.get("string_character_types", "lowercase"))
+if config.get("character_types", "uppercase"):
+    possibleCharacters = possibleCharacters + str(config.get("string_character_types", "uppercase"))
+if config.get("character_types", "numbers"):
+    possibleCharacters = possibleCharacters + str(config.get("string_character_types", "numbers"))
+if config.get("character_types", "special"):
+    possibleCharacters = possibleCharacters + str(config.get("string_character_types", "special"))
+if config.get("character_types", "space"):
+    possibleCharacters = possibleCharacters + str(config.get("string_character_types", "space"))
 
 
 def mapped_loop_digit(args):
