@@ -8,15 +8,15 @@ from misc.config import config
 possibleCharacters = ""
 
 
-if config.get("character_types", "lowercase"):
+if config.getboolean("character_types", "lowercase"):
     possibleCharacters = possibleCharacters + str(config.get("string_character_types", "lowercase"))
-if config.get("character_types", "uppercase"):
+if config.getboolean("character_types", "uppercase"):
     possibleCharacters = possibleCharacters + str(config.get("string_character_types", "uppercase"))
-if config.get("character_types", "numbers"):
+if config.getboolean("character_types", "numbers"):
     possibleCharacters = possibleCharacters + str(config.get("string_character_types", "numbers"))
-if config.get("character_types", "special"):
+if config.getboolean("character_types", "special"):
     possibleCharacters = possibleCharacters + str(config.get("string_character_types", "special"))
-if config.get("character_types", "space"):
+if config.getboolean("character_types", "space"):
     possibleCharacters = possibleCharacters + str(config.get("string_character_types", "space"))
 
 
@@ -25,16 +25,16 @@ def mapped_loop_digit(args):
 
 
 def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=False):
-    if place == config.get("string_creation", "length_for_new_process"):
+    if place == config.getint("string_creation", "length_for_new_process"):
         current_strings = list()
 
     for character in possibleCharacters:
         current_str[place] = character
 
-        if is_outer and config.get("development", "minor_logging"):
+        if is_outer and config.getboolean("development", "minor_logging"):
             print("Outer character maker at", possibleCharacters.index(character) + 1, "in", len(possibleCharacters))
 
-        elif is_pool and config.get("development", "pool_minor_logging"):
+        elif is_pool and config.getboolean("development", "pool_minor_logging"):
             print("Outest in pool character maker for process", multiprocessing.current_process()._identity[0],
                   "at", possibleCharacters.index(character) + 1, "in", len(possibleCharacters), "with character as",
                   str(character) + ". Current string is", current_str)
@@ -44,19 +44,19 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
             hashes.append(hashlib.md5(string.encode()).hexdigest())
             strings.append(string)
 
-        elif place == config.get("string_creation", "length_for_new_process"):
+        elif place == config.getint("string_creation", "length_for_new_process"):
             current_strings.append(current_str.copy())
 
         else:
             loop_digit(current_str, place - 1, strings, hashes)
 
-    if place == config.get("string_creation", "length_for_new_process"):
+    if place == config.getint("string_creation", "length_for_new_process"):
         args = list()
         print("Starting a new pool")
         for string in current_strings:
             args.append([string, place - 1, strings, hashes])
 
-        with multiprocessing.Pool(processes=config.get("string_creation", "processes")) as pool:
+        with multiprocessing.Pool(processes=config.getint("string_creation", "processes")) as pool:
             pool.map(mapped_loop_digit, args)
             pool.close()
             pool.join()
@@ -73,8 +73,8 @@ def create():
     all_strings = manager.list("")
     all_hashes = manager.list("")
 
-    for string_length in range(config.get("string_content", "min_length"),
-                               config.get("string_content", "max_length") + 1):
+    for string_length in range(config.getint("string_content", "min_length"),
+                               config.getint("string_content", "max_length") + 1):
         print("Generating strings with", string_length, "characters")
 
         start_time = time.time()
@@ -101,7 +101,7 @@ def create():
     total_end_time = time.time()
 
     print("Generated and saved", len(all_hashes), "strings of", config["string_content"]["min_length"], "to",
-          config.get("string_content", "max_length"), "length with the characters '" + str(possibleCharacters) + "' in",
+          config.getint("string_content", "max_length"), "length with the characters '" + str(possibleCharacters) + "' in",
           total_end_time - total_start_time, "seconds")
 
 
