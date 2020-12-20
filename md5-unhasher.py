@@ -28,7 +28,7 @@ if __name__ == "__main__":
     import kivy
     from kivy.logger import Logger
 
-    Logger.info("UserDataDir: " + str(user_data_dir))
+    Logger.info("UserDataDir: UserDataDir at \"" + str(user_data_dir) + "\"")
 
     if args[-1] == "--help":
         Logger.info("Help: \n" +
