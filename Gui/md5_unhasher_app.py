@@ -9,6 +9,8 @@ from Gui.homeScreen import HomeScreen
 from Gui.hashingScreen import HashingScreen
 from Gui.decryptScreen import DecryptScreen
 from Gui.configScreen import ConfigScreen
+from Gui.configLayout import ConfigLayout
+from Gui.configItem import ConfigItem
 
 
 class Md5_unhasher_app(App):
