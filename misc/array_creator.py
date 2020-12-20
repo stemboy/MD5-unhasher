@@ -24,9 +24,10 @@ def mapped_loop_digit(args):
     loop_digit(*args, is_pool=True)
 
 
-def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=False):
+def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=False, parent_character=None):
     if place == config.getint("string_creation", "length_for_new_process"):
-        current_strings = list()
+        pool = multiprocessing.Pool(processes=config.getint("string_creation", "processes"))
+        print("New pool created")
 
     for character in possibleCharacters:
         current_str[place] = character
@@ -35,7 +36,8 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
             print("Outer character maker at", possibleCharacters.index(character) + 1, "in", len(possibleCharacters))
 
         elif is_pool and config.getboolean("development", "pool_minor_logging"):
-            print("Outest in pool character maker for process", multiprocessing.current_process()._identity[0],
+            print("Outest in pool loop character maker for process", multiprocessing.current_process()._identity[0],
+                  "with parent character of", parent_character,
                   "at", possibleCharacters.index(character) + 1, "in", len(possibleCharacters), "with character as",
                   str(character) + ". Current string is", current_str)
 
@@ -45,21 +47,17 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
             strings.append(string)
 
         elif place == config.getint("string_creation", "length_for_new_process"):
-            current_strings.append(current_str.copy())
+            pool.apply_async(loop_digit, args=(current_str.copy(), place-1, strings, hashes), kwds={"is_pool": True, "parent_character": character})
 
         else:
             loop_digit(current_str, place - 1, strings, hashes)
 
     if place == config.getint("string_creation", "length_for_new_process"):
-        args = list()
-        print("Starting a new pool")
-        for string in current_strings:
-            args.append([string, place - 1, strings, hashes])
+        print()
+        print("Waiting for pool to finish")
+        pool.close()
+        pool.join()
 
-        with multiprocessing.Pool(processes=config.getint("string_creation", "processes")) as pool:
-            pool.map(mapped_loop_digit, args)
-            pool.close()
-            pool.join()
 
 
 def create():
