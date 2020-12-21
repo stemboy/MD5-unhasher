@@ -101,7 +101,7 @@ def create():
 
         last_len = len(all_hashes)
 
-    with open('md5_hashes_to_strings.json', 'w') as outfile:
+    with open(config.get("encryption", "type") + '_hashes_to_strings.json', 'w') as outfile:
         start_time = time.time()
         all_hashes_and_arrays = dict(zip(all_hashes, all_strings))
         json.dump(all_hashes_and_arrays, outfile, indent=4)
