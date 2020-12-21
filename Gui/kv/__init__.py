@@ -6,10 +6,10 @@ from kivy import Logger
 def get():
     kvPaths = list()
 
-    kvPaths.append(os.path.join("Gui", "kv", "imports.kv"))
+    kvPaths.append(os.path.join("Gui", "kv", "setups.kv"))
 
     for fileName in os.listdir("Gui/kv"):
-        if fileName.endswith(".kv") and fileName != "imports.kv":
+        if fileName.endswith(".kv") and fileName != "setups.kv":
             kvPaths.append(os.path.join("Gui", "kv", fileName))
 
 
