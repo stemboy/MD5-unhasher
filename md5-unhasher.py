@@ -58,6 +58,6 @@ if __name__ == "__main__":
                        "                       --help               - Show this page\n" +
                        "                       --gui-only           - Run only the gui\n" +
                        "                       --array-create-only  - Run the array creator only\n")
-        print("Running the program as normal")
+        Logger.info("App: Running the program as normal")
 
         # Nothing here, no program in place yet
