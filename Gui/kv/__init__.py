@@ -15,6 +15,7 @@ def get():
                 kv = kv + "\n" + str(file.read()) + "\n\n"
 
 
-    Logger.info("App: Located kv files")
+    Logger.info("App: Located and compiled kv files")
+    Logger.debug("App: Compiled kv - \"\n" + kv + "\"")
 
     return kv
