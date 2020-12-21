@@ -24,18 +24,19 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
     if place == config.getint("string_creation", "length_for_new_process"):
         pool = multiprocessing.Pool(processes=config.getint("string_creation", "processes"))
         print("New pool created")
+        print()
 
     for character in possibleCharacters:
         current_str[place] = character
 
         if is_outer and config.getboolean("development", "outer_logging"):
-            print("Outer character maker at", possibleCharacters.index(character) + 1, "in", len(possibleCharacters))
+            print("Outer character maker | Progress =", possibleCharacters.index(character) + 1, "out of", len(possibleCharacters))
 
         elif is_pool and config.getboolean("development", "pool_outer_logging"):
-            print("Outest in pool loop character maker for process", multiprocessing.current_process()._identity[0],
-                  "with parent character of", parent_character,
-                  "at", possibleCharacters.index(character) + 1, "in", len(possibleCharacters), "with character as",
-                  str(character) + ". Current string is", current_str)
+            print("Outest in pool loop character maker | Process =", multiprocessing.current_process()._identity[0],
+                  "| Parent character =", parent_character,
+                  "| Progress =", possibleCharacters.index(character) + 1, "out of", len(possibleCharacters),
+                  "| Character =", str(character), "| Current string =", current_str)
 
         if place == 0:
             string = "".join(_character for _character in current_str)
@@ -51,6 +52,7 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
     if place == config.getint("string_creation", "length_for_new_process"):
         print()
         print("Waiting for pool to finish")
+        print()
         pool.close()
         pool.join()
 
