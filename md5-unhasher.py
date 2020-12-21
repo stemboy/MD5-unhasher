@@ -30,6 +30,8 @@ if __name__ == "__main__":
 
     Logger.info("UserDataDir: UserDataDir at \"" + str(user_data_dir) + "\"")
 
+    Logger.info("Arguments: Program ran with the args " + str(sys.argv))
+
     if args[-1] == "--help":
         Logger.info("Help: \n" +
                     "Usages md5-unhasher.py [Option]\n" +
@@ -38,7 +40,7 @@ if __name__ == "__main__":
                     "                       --array-create-only  - Run the array creator only\n")
 
     elif args[-1] == "--gui-only":
-        Logger.info("md5-unhasher: Running with the gui only")
+        Logger.info("App: Running with the gui only")
 
         import Gui
         from Gui import Md5_unhasher_app
@@ -49,12 +51,17 @@ if __name__ == "__main__":
     elif args[-1] == "--array-create-only":
 
 
-        Logger.info("md5-unhasher: Running the array creator only")
+        Logger.info("App: Running the array creator only")
 
         import misc
         from misc.array_creator import create
 
         create()
+
+    elif args[-1] == "--normal":
+
+
+        Logger.info("App: Running the program as normal")
 
     else:
         Logger.warning("Arguments: No arguments were given or the given arguments were not correct,\n" +
