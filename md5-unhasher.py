@@ -28,6 +28,9 @@ if __name__ == "__main__":
     import kivy
     from kivy.logger import Logger
 
+    import Gui
+    import misc
+
     Logger.info("UserDataDir: UserDataDir at \"" + str(user_data_dir) + "\"")
 
     if args[-1] == "--help":
@@ -46,6 +49,8 @@ if __name__ == "__main__":
         app.run()
 
     elif args[-1] == "--array-create-only":
+
+
         Logger.info("md5-unhasher: Running the array creator only")
 
         from misc.array_creator import create
