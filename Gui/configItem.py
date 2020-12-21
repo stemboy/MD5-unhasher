@@ -32,7 +32,7 @@ class ConfigItem(FloatLayout):
 
         self.update()
 
-    def text_box_validator(self, *args):
+    def text_box_int_validator(self, *args):
         numb = int(self._editorWidget2.text)
 
         if self.min is not None and numb < self.min:
@@ -60,8 +60,8 @@ class ConfigItem(FloatLayout):
 
             self._editorWidget2 = TextInput(multiline=False, font_size=self._editorHolder.height/2,
                                             text=config.get(self.section, self.key), input_filter="int")
-            self._editorWidget2.bind(on_text_validate=self.text_box_validator)
-            self._editorWidget2.bind(focus=self.text_box_validator)
+            self._editorWidget2.bind(on_text_validate=self.text_box_int_validator)
+            self._editorWidget2.bind(focus=self.text_box_int_validator)
 
 
         if self._editorWidget2 is not None:
