@@ -2,6 +2,8 @@
     ConfigLayout:
         id: ConfigLayout
 
+        orientation: "vertical"
+
         ConfigItem:
             type: "slider"
             title: "Minimum Length"
@@ -14,3 +16,16 @@
 
             section: "string_content"
             key: "min_length"
+
+        ConfigItem:
+            type: "slider"
+            title: "Maximum Length"
+            description: "Maximum length of strings to generate"
+
+            min: 1
+            sliderMin: 1
+            max: None
+            sliderMax: 10
+
+            section: "string_content"
+            key: "max_length"
