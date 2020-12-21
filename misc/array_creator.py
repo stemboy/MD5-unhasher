@@ -110,7 +110,10 @@ def create():
         os.mkdir(os.path.join(usrDataDir, "encryptions"))
         print("Encryptions folder does not exist so was created")
 
-    path = os.path.join(usrDataDir, "encryptions",  config.get("encryption", "type") + '_hashes_to_strings.json')
+    name = config.get("encryption", "type") + "_" + possibleCharacters + "_" + \
+           config.get("string_content", "min_length") + " to " + \
+           config.get("string_content", "max_length") + '.hashes_to_strings.json'
+    path = os.path.join(usrDataDir, "encryptions", name)
 
     with open(path, 'w') as outfile:
         start_time = time.time()
