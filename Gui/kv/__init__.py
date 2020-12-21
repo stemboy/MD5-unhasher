@@ -4,18 +4,16 @@ from kivy import Logger
 
 
 def get():
-    kv = ""
+    kvPaths = list()
 
-    with open(os.path.join("Gui", "kv", "imports.kv"), "r") as file:
-        kv = kv + str(file.read()) + "\n\n\n"
+    kvPaths.append(os.path.join("Gui", "kv", "imports.kv"))
 
     for fileName in os.listdir("Gui/kv"):
         if fileName.endswith(".kv") and fileName != "imports.kv":
-            with open(os.path.join("Gui", "kv", fileName), "r") as file:
-                kv = kv + "\n" + str(file.read()) + "\n\n"
+            kvPaths.append(os.path.join("Gui", "kv", fileName))
 
 
-    Logger.info("App: Located and compiled kv files")
-    Logger.debug("App: Compiled kv - \"\n" + kv + "\"")
+    Logger.info("App: Located kv files")
+    Logger.debug("App: Kv paths are {}".format(kvPaths))
 
-    return kv
+    return kvPaths

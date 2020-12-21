@@ -17,7 +17,8 @@ from Gui.parent import Parent
 class Md5_unhasher_app(App):
     def build(self):
         Logger.info("App: Started build")
-        Builder.load_string(kv.get())
+        for kvFilePath in kv.get():
+            Builder.load_file(kvFilePath)
         Logger.info("App: Built kv")
 
         Window.minimum_width, Window.minimum_height = "25cm", " 25cm"
