@@ -48,8 +48,9 @@ def loop_digit(current_str, place, strings, hashes, encrypt_func, is_outer=False
             strings.append(string)
 
         elif place == config.getint("string_creation", "length_for_new_process"):
-            pool.apply_async(loop_digit, args=(current_str.copy(), place - 1, strings, hashes),
-                             kwds={"is_pool": True, "parent_character": character})
+
+            pool.apply_async(loop_digit, args=(current_str.copy(), place - 1, strings, hashes, encrypt_func),
+                             kwds={"is_pool_outer": True, "parent_character": character})
 
         else:
             loop_digit(current_str, place - 1, strings, hashes, encrypt_func)
