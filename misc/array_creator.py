@@ -19,7 +19,7 @@ if config.getboolean("character_types", "space"):
     possibleCharacters = possibleCharacters + str(config.get("string_character_types", "space"))
 
 
-def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=False, parent_character=None):
+def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool_outer=False, parent_character=None):
     if place == config.getint("string_creation", "length_for_new_process"):
         pool = multiprocessing.Pool(processes=config.getint("string_creation", "processes"))
         print("New pool created")
@@ -32,7 +32,7 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
             print("Outer character maker | Progress = {:02d}".format(possibleCharacters.index(character) + 1), "out of",
                   len(possibleCharacters))
 
-        elif is_pool and config.getboolean("development", "pool_loop_outer_logging"):
+        elif is_pool_outer and config.getboolean("development", "pool_loop_outer_logging"):
             print("Outest in pool loop character maker | Process = {:02d}".format(
                 multiprocessing.current_process()._identity[0]),
                 "| Parent Progress = {:02d}".format(possibleCharacters.index(parent_character) + 1), "out of",
