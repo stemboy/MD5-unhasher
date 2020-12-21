@@ -28,9 +28,6 @@ if __name__ == "__main__":
     import kivy
     from kivy.logger import Logger
 
-    import Gui
-    import misc
-
     Logger.info("UserDataDir: UserDataDir at \"" + str(user_data_dir) + "\"")
 
     if args[-1] == "--help":
@@ -43,6 +40,7 @@ if __name__ == "__main__":
     elif args[-1] == "--gui-only":
         Logger.info("md5-unhasher: Running with the gui only")
 
+        import Gui
         from Gui import Md5_unhasher_app
 
         app = Md5_unhasher_app()
@@ -53,6 +51,7 @@ if __name__ == "__main__":
 
         Logger.info("md5-unhasher: Running the array creator only")
 
+        import misc
         from misc.array_creator import create
 
         create()
