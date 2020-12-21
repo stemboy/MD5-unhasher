@@ -20,10 +20,6 @@ if config.getboolean("character_types", "space"):
     possibleCharacters = possibleCharacters + str(config.get("string_character_types", "space"))
 
 
-def mapped_loop_digit(args):
-    loop_digit(*args, is_pool=True)
-
-
 def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=False, parent_character=None):
     if place == config.getint("string_creation", "length_for_new_process"):
         pool = multiprocessing.Pool(processes=config.getint("string_creation", "processes"))
@@ -32,10 +28,10 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
     for character in possibleCharacters:
         current_str[place] = character
 
-        if is_outer and config.getboolean("development", "minor_logging"):
+        if is_outer and config.getboolean("development", "outer_logging"):
             print("Outer character maker at", possibleCharacters.index(character) + 1, "in", len(possibleCharacters))
 
-        elif is_pool and config.getboolean("development", "pool_minor_logging"):
+        elif is_pool and config.getboolean("development", "pool_outer_logging"):
             print("Outest in pool loop character maker for process", multiprocessing.current_process()._identity[0],
                   "with parent character of", parent_character,
                   "at", possibleCharacters.index(character) + 1, "in", len(possibleCharacters), "with character as",
