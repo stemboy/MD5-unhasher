@@ -11,6 +11,7 @@ from Gui.decryptScreen import DecryptScreen
 from Gui.configScreen import ConfigScreen
 from Gui.configLayout import ConfigLayout
 from Gui.configItem import ConfigItem
+from Gui.parent import Parent
 
 
 class Md5_unhasher_app(App):
@@ -23,4 +24,4 @@ class Md5_unhasher_app(App):
         Window.size = Window.minimum_width, Window.minimum_height
         Logger.info("App: Set window size and minimum size")
 
-        return ScreenManager()
+        return Parent()
