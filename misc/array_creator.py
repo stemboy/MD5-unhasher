@@ -2,6 +2,9 @@ import hashlib
 import json
 import multiprocessing
 import time
+import os
+
+import appdirs
 
 from misc.config import config
 
@@ -101,7 +104,15 @@ def create():
 
         last_len = len(all_hashes)
 
-    with open(config.get("encryption", "type") + '_hashes_to_strings.json', 'w') as outfile:
+    usrDataDir = os.path.join(appdirs.user_data_dir(), "md5-unhasher")
+
+    if not os.path.exists(os.path.join(usrDataDir, "encryptions")):
+        os.mkdir(os.path.join(usrDataDir, "encryptions"))
+        print("Encryptions folder does not exist so was created")
+
+    path = os.path.join(usrDataDir, "encryptions",  config.get("encryption", "type") + '_hashes_to_strings.json')
+
+    with open(path, 'w') as outfile:
         start_time = time.time()
         all_hashes_and_arrays = dict(zip(all_hashes, all_strings))
         json.dump(all_hashes_and_arrays, outfile, indent=4)
@@ -116,6 +127,7 @@ def create():
           config.getint("string_content", "max_length"),
           "length with the characters '" + str(possibleCharacters) + "' in",
           total_end_time - total_start_time, "seconds")
+    print("The file is at", path)
 
 
 if __name__ == '__main__':
