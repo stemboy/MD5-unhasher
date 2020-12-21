@@ -32,7 +32,7 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
             print("Outer character maker | Progress = {:02d}".format(possibleCharacters.index(character) + 1), "out of",
                   len(possibleCharacters))
 
-        elif is_pool and config.getboolean("development", "pool_outer_logging"):
+        elif is_pool and config.getboolean("development", "pool_loop_outer_logging"):
             print("Outest in pool loop character maker | Process = {:02d}".format(
                 multiprocessing.current_process()._identity[0]),
                 "| Parent Progress = {:02d}".format(possibleCharacters.index(parent_character) + 1), "out of",
