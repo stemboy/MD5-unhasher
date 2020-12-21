@@ -7,7 +7,6 @@ from misc.config import config
 
 possibleCharacters = ""
 
-
 if config.getboolean("character_types", "lowercase"):
     possibleCharacters = possibleCharacters + str(config.get("string_character_types", "lowercase"))
 if config.getboolean("character_types", "uppercase"):
@@ -30,13 +29,17 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
         current_str[place] = character
 
         if is_outer and config.getboolean("development", "outer_logging"):
-            print("Outer character maker | Progress =", possibleCharacters.index(character) + 1, "out of", len(possibleCharacters))
+            print("Outer character maker | Progress = {:02d}".format(possibleCharacters.index(character) + 1), "out of",
+                  len(possibleCharacters))
 
         elif is_pool and config.getboolean("development", "pool_outer_logging"):
-            print("Outest in pool loop character maker | Process =", multiprocessing.current_process()._identity[0],
-                  "| Parent character =", parent_character,
-                  "| Progress =", possibleCharacters.index(character) + 1, "out of", len(possibleCharacters),
-                  "| Character =", str(character), "| Current string =", current_str)
+            print("Outest in pool loop character maker | Process = {:02d}".format(
+                multiprocessing.current_process()._identity[0]),
+                "| Parent Progress = {:02d}".format(possibleCharacters.index(parent_character) + 1), "out of",
+                "| Parent character = {0: >2}".format(str(parent_character)),
+                "| Progress = {:02d}".format(possibleCharacters.index(character) + 1), "out of",
+                len(possibleCharacters),
+                "| Character = {0: >2}".format(str(character)), "| Current string =", current_str)
 
         if place == 0:
             string = "".join(_character for _character in current_str)
@@ -44,7 +47,8 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
             strings.append(string)
 
         elif place == config.getint("string_creation", "length_for_new_process"):
-            pool.apply_async(loop_digit, args=(current_str.copy(), place-1, strings, hashes), kwds={"is_pool": True, "parent_character": character})
+            pool.apply_async(loop_digit, args=(current_str.copy(), place - 1, strings, hashes),
+                             kwds={"is_pool": True, "parent_character": character})
 
         else:
             loop_digit(current_str, place - 1, strings, hashes)
@@ -55,7 +59,6 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool=Fals
         print()
         pool.close()
         pool.join()
-
 
 
 def create():
@@ -97,7 +100,8 @@ def create():
     total_end_time = time.time()
 
     print("Generated and saved", len(all_hashes), "strings of", config["string_content"]["min_length"], "to",
-          config.getint("string_content", "max_length"), "length with the characters '" + str(possibleCharacters) + "' in",
+          config.getint("string_content", "max_length"),
+          "length with the characters '" + str(possibleCharacters) + "' in",
           total_end_time - total_start_time, "seconds")
 
 
