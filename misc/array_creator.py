@@ -19,7 +19,8 @@ if config.getboolean("character_types", "space"):
     possibleCharacters = possibleCharacters + str(config.get("string_character_types", "space"))
 
 
-def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool_outer=False, parent_character=None):
+def loop_digit(current_str, place, strings, hashes, encrypt_func, is_outer=False, is_pool_outer=False,
+               parent_character=None):
     if place == config.getint("string_creation", "length_for_new_process"):
         pool = multiprocessing.Pool(processes=config.getint("string_creation", "processes"))
         print("New pool created")
@@ -43,7 +44,7 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool_oute
 
         if place == 0:
             string = "".join(_character for _character in current_str)
-            hashes.append(hashlib.md5(string.encode()).hexdigest())
+            hashes.append(encrypt_func(string.encode()).hexdigest())
             strings.append(string)
 
         elif place == config.getint("string_creation", "length_for_new_process"):
@@ -51,7 +52,7 @@ def loop_digit(current_str, place, strings, hashes, is_outer=False, is_pool_oute
                              kwds={"is_pool": True, "parent_character": character})
 
         else:
-            loop_digit(current_str, place - 1, strings, hashes)
+            loop_digit(current_str, place - 1, strings, hashes, encrypt_func)
 
     if place == config.getint("string_creation", "length_for_new_process"):
         print()
@@ -72,6 +73,17 @@ def create():
     all_strings = manager.list("")
     all_hashes = manager.list("")
 
+    if config.get("encryption", "type") == "md5":
+        encrypt_func = hashlib.md5
+    elif config.get("encryption", "type") == "sha1":
+        encrypt_func = hashlib.sha1
+    elif config.get("encryption", "type") == "sha3-256":
+        encrypt_func = hashlib.sha3_256
+    else:
+        raise Exception(config.get("encryption", "type") + " is not a valid encryption type (md5, sha1, sha3-256)")
+
+    print("Encrypting with", config.get("encryption", "type"), "using the func", encrypt_func)
+
     for string_length in range(config.getint("string_content", "min_length"),
                                config.getint("string_content", "max_length") + 1):
         print("Generating strings with", string_length, "characters")
@@ -79,7 +91,7 @@ def create():
         start_time = time.time()
 
         current_string = ["□" for _ in range(string_length)]
-        loop_digit(current_string, string_length - 1, all_strings, all_hashes, is_outer=True)
+        loop_digit(current_string, string_length - 1, all_strings, all_hashes, encrypt_func, is_outer=True)
 
         end_time = time.time()
 
