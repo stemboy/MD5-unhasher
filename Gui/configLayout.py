@@ -1,5 +1,5 @@
-from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.boxlayout import BoxLayout
 
 
-class ConfigLayout(FloatLayout):
+class ConfigLayout(BoxLayout):
     pass
