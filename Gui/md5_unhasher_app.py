@@ -12,7 +12,7 @@ from Gui.decryptScreen import DecryptScreen
 from Gui.configScreen import ConfigScreen
 from Gui.configLayout import ConfigLayout
 from Gui.configItem import ConfigItem
-from Gui.encryptionBox import EncryptionBox
+from Gui.encryptionDropDown import EncryptionDropDown
 from Gui.parent import Parent
 
 
