@@ -12,7 +12,7 @@ from misc.config import config
 
 class ConfigItem(BoxLayout):
     # General options
-    type = OptionProperty("string", options=["numericSlider", "numeric", "string", "bool", "option"])
+    type = OptionProperty("string", options=["numericSlider", "string", "bool", "option", "title"])
     title = StringProperty("Title")
     description = StringProperty("Description")
     section = StringProperty("")
@@ -105,7 +105,8 @@ class ConfigItem(BoxLayout):
         if self._editorWidget2 is not None:
             self._editorHolder.add_widget(self._editorWidget2)
 
-        self._editorHolder.add_widget(self._editorWidget)
+        if self.type != "title":
+            self._editorHolder.add_widget(self._editorWidget)
 
     def value_changed(self, _, value):
         if self._editorWidget2 is not None:
