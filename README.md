@@ -3,10 +3,12 @@ This program will decrypt md5 hashes using a database that you can help mine, wh
 
 # Usage 
 ```
-md5-unhasher.py [Option]  
-                --help               - Show this page  
-                --gui-only           - Run only the gui  
-                --array-create-only  - Run the array creator only
+Usages md5-unhasher.py [Option]
+                       --help               - Show this page
+                       --gui-only           - Run only the gui
+                       --array-create-only  - Run the array creator only
+                       --time-array-create  - Time the array creator
+                       --normal             - Run the app normally
 ```
 
 # How it works
