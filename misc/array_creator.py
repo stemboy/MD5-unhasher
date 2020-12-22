@@ -33,11 +33,11 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, i
         current_str[place] = character
 
         if is_outer and config.getboolean("development", "outer_logging"):
-            print("Outer character maker | Progress = {:02d}".format(possibleCharacters.index(character) + 1), "out of",
+            print("Outer dataset maker | Progress = {:02d}".format(possibleCharacters.index(character) + 1), "out of",
                   len(possibleCharacters))
 
         elif is_pool_outer and config.getboolean("development", "pool_loop_outer_logging"):
-            print("Outest in pool loop character maker | Process = {:02d}".format(
+            print("Outest in pool loop dataset maker | Process = {:02d}".format(
                 multiprocessing.current_process()._identity[0]),
                 "| Parent Progress = {:02d}".format(possibleCharacters.index(parent_character) + 1), "out of",
                 "| Parent character = ", str(parent_character),
@@ -100,7 +100,7 @@ def create():
 
         end_time = time.time()
 
-        print("Created", len(hash_dataset) - last_len, "strings in", end_time - start_time, "seconds")
+        print("Created", len(hash_dataset) - last_len, "strings and hashes in", end_time - start_time, "seconds")
         print("\n")
 
         last_len = len(hash_dataset)
@@ -127,11 +127,11 @@ def create():
 
     total_end_time = time.time()
 
-    print("Generated and saved", len(hash_dataset), "strings of", config["string_content"]["min_length"], "to",
+    print("Generated and saved", len(hash_dataset), "hashes and strings, of", config["string_content"]["min_length"], "to",
           config.getint("string_content", "max_length"),
-          "length with the characters '" + str(possibleCharacters) + "' in",
+          "in length, with the characters '" + str(possibleCharacters) + "' in",
           total_end_time - total_start_time, "seconds")
-    print("The file is at", path)
+    print("The dataset's file(s) is (are) at", path)
 
 
 if __name__ == '__main__':
