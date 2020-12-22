@@ -1,12 +1,13 @@
-from kivy.properties import OptionProperty, StringProperty, ObjectProperty, NumericProperty, Logger
-from kivy.uix.floatlayout import FloatLayout
+from kivy.properties import OptionProperty, StringProperty, ObjectProperty, NumericProperty
+from kivy.logger import Logger
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.slider import Slider
 from kivy.uix.textinput import TextInput
 
 from misc.config import config
 
 
-class ConfigItem(FloatLayout):
+class ConfigItem(BoxLayout):
     type = OptionProperty("string", options=["slider", "numeric", "string", "bool"])
     title = StringProperty("Title")
     description = StringProperty("Description")
