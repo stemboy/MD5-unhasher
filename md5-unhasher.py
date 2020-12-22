@@ -58,19 +58,17 @@ if __name__ == "__main__":
 
         create()
 
-    elif "--time-array-create" in args:
+    elif args[-1] == "--time-array-create":
         Logger.info("App: Timing the array creator")
         import timeit
         from statistics import mean, median, mode
 
-        if args[-2] == "--time-array-create":
-            times = int(args[-1])
-        else:
-            Logger.warning("Timer: no option in amount of times given, defaulting to 10")
-            times = 10
+        times = input("How many times to loop? ")
+        Logger.info("Timer: looping " + times)
 
         timeArray = sorted(timeit.Timer(stmt="create(no_save=True)",
-                                        setup="import misc; from misc.array_creator import create").repeat(times, 1))
+                                        setup="import misc; from misc.array_creator import create").repeat(int(times),
+                                                                                                           1))
 
         Logger.info("Timer: Raw times - " + str(timeArray))
         Logger.info("Timer: Mean time - " + str(mean(timeArray)))
