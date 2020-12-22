@@ -5,7 +5,6 @@ import time
 import os
 
 import appdirs
-from kivy import Logger
 
 from misc.config import config
 from misc.functions import log
@@ -140,8 +139,6 @@ def create(no_save=False):
 
 
 if __name__ == '__main__':
-    import os
-
     os.chdir(os.path.split(os.path.dirname(globals()["__file__"]))[0])
 
     create()
