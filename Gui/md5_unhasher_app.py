@@ -2,6 +2,7 @@ from kivy import Logger
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.lang import Builder
+from kivy.properties import BooleanProperty
 
 from Gui import kv
 from Gui.ScreenManager import ScreenManager
@@ -16,6 +17,8 @@ from Gui.parent import Parent
 
 
 class Md5_unhasher_app(App):
+    gui_only = BooleanProperty(False)
+
     def build(self):
         Logger.info("App: Started build")
         for kvFilePath in kv.get():

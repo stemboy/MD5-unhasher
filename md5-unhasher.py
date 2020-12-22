@@ -45,7 +45,7 @@ if __name__ == "__main__":
         import Gui
         from Gui import Md5_unhasher_app
 
-        app = Md5_unhasher_app()
+        app = Md5_unhasher_app(gui_only=True)
         app.run()
 
     elif args[-1] == "--array-create-only":
