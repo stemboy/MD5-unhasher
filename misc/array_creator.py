@@ -106,14 +106,14 @@ def create():
 
     usrDataDir = os.path.join(appdirs.user_data_dir(), "md5-unhasher")
 
-    if not os.path.exists(os.path.join(usrDataDir, "encryptions")):
-        os.mkdir(os.path.join(usrDataDir, "encryptions"))
+    if not os.path.exists(os.path.join(usrDataDir, "encryption_datasets")):
+        os.mkdir(os.path.join(usrDataDir, "encryption_datasets"))
         print("Encryptions folder does not exist so was created")
 
     name = config.get("encryption", "type") + "_" + possibleCharacters + "_" + \
            config.get("string_content", "min_length") + " to " + \
            config.get("string_content", "max_length") + '.hashes_to_strings.json'
-    path = os.path.join(usrDataDir, "encryptions", name)
+    path = os.path.join(usrDataDir, "encryption_datasets", name)
 
     with open(path, 'w') as outfile:
         start_time = time.time()

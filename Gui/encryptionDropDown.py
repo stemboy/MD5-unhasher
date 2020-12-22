@@ -38,7 +38,7 @@ class EncryptionDropDown(BoxLayout):
         else:
             customHashToStringFiles = [str(os.path.splitext(path)[0])
                                        for path in os.listdir(os.path.join(user_data_dir(),
-                                                                           "md5-unhasher", "encryptions"))]
+                                                                           "md5-unhasher", "encryption_datasets"))]
             Logger.debug("Encryption DropDown: Loaded custom encryption files")
 
             for text in customHashToStringFiles:
