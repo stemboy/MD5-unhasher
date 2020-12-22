@@ -1,24 +1,30 @@
 from kivy.animation import Animation
 from kivy.core.window import Window
-from kivy.properties import NumericProperty
-from kivy.uix.boxlayout import BoxLayout
 from kivy.graphics import Rectangle, Color
+from kivy.uix.boxlayout import BoxLayout
 
 
 class ConfigLayout(BoxLayout):
-    o = NumericProperty(0)
+    def add_widget(self, widget, index=0, canvas=None):
+        super(ConfigLayout, self).add_widget(widget, index, canvas)
+        widget.opacity = 0
 
     def on_enter(self):
-        self.o = 0
-        a = Animation(o=1, duration=1)
-        a.bind(on_progress=self.draw_bg)
-        a.start(self)
+
+        for n, child in enumerate(reversed(self.children)):
+            print(child, n)
+            child.opacity = 0
+
+            a = Animation(duration=0.1*n)
+            a += Animation(opacity=1, duration=1)
+            a.bind(on_progress=self.draw_bg)
+            a.start(child)
 
         self.bind(pos=self.draw_bg, size=self.draw_bg)
 
     def draw_bg(self, *args):
         n = 0
-        colors = (0.3, 0.3, 0.3), (0.5, 0.5, 0.5)
+        colors = (0.1, 0.1, 0.1), (0.2, 0.2, 0.2)
 
         with self.canvas.before:
             self.canvas.before.clear()
@@ -26,7 +32,7 @@ class ConfigLayout(BoxLayout):
             for child in self.children:
                 if child.__class__.__name__ != "Widget":
 
-                    Color(rgb=colors[n], a=self.o)
+                    Color(rgb=colors[n], a=child.opacity)
                     Rectangle(pos=child.pos, size=(Window.width, child.height))
 
                 n = (n + 1) % 2
