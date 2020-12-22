@@ -28,7 +28,6 @@ class Md5_unhasher_app(App):
 
         Window.size = cm(23), cm(18)
         Window.minimum_width, Window.minimum_height = cm(23), cm(18)
-        Window.bind(size=print)
         Logger.info("App: Set window size and minimum size")
 
         return Parent()
