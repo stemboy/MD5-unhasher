@@ -12,7 +12,6 @@ class ConfigLayout(BoxLayout):
     def on_enter(self):
 
         for n, child in enumerate(reversed(self.children)):
-            print(child, n)
             child.opacity = 0
 
             a = Animation(duration=0.1*n)
