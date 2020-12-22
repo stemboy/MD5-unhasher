@@ -1,13 +1,15 @@
-from kivy.properties import OptionProperty, StringProperty, ObjectProperty, NumericProperty, Logger
-from kivy.uix.floatlayout import FloatLayout
+from kivy.properties import OptionProperty, StringProperty, ObjectProperty, NumericProperty
+from kivy.logger import Logger
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.slider import Slider
+from kivy.uix.switch import Switch
 from kivy.uix.textinput import TextInput
 
 from misc.config import config
 
 
-class ConfigItem(FloatLayout):
-    type = OptionProperty("string", options=["slider", "numeric", "string", "bool"])
+class ConfigItem(BoxLayout):
+    type = OptionProperty("string", options=["numericSlider", "numeric", "string", "bool"])
     title = StringProperty("Title")
     description = StringProperty("Description")
     min = NumericProperty(None)
@@ -50,18 +52,31 @@ class ConfigItem(FloatLayout):
 
         self._editorHolder.clear_widgets()
 
-        if self.type == "slider":
+        if self.type == "numericSlider":
             if self.sliderMin is None or self.sliderMax is None:
-                raise ValueError("'sliderMin' and / or 'sliderMax' cannot be 'None' if type is slider")
+                raise ValueError("'sliderMin' and / or 'sliderMax' cannot be 'None' if type is numericSlider")
+
 
             self._editorWidget = Slider(min=self.sliderMin, max=self.sliderMax,
                                         value=config.getint(self.section, self.key), step=1)
             self._editorWidget.bind(value=self.value_changed)
 
-            self._editorWidget2 = TextInput(multiline=False, font_size=self._editorHolder.height/2,
+            self._editorWidget2 = TextInput(multiline=False, font_size=self._editorHolder.height / 2,
                                             text=config.get(self.section, self.key), input_filter="int")
             self._editorWidget2.bind(on_text_validate=self.text_box_int_validator)
             self._editorWidget2.bind(focus=self.text_box_int_validator)
+
+
+        elif self.type == "bool":
+            self._editorWidget = Switch(active=config.getboolean(self.section, self.key))
+            self._editorWidget.bind(active=self.value_changed)
+
+
+        elif self.type == "string":
+            self._editorWidget = TextInput(multiline=False, font_size=self._editorHolder.height / 2,
+                                           text=config.get(self.section, self.key))
+            self._editorWidget.bind(on_text_validate=lambda *args: self.value_changed(None, self._editorWidget.text))
+            self._editorWidget.bind(focus=lambda *args: self.value_changed(None, self._editorWidget.text))
 
 
         if self._editorWidget2 is not None:
@@ -74,7 +89,6 @@ class ConfigItem(FloatLayout):
             self._editorWidget2.text = str(value)
 
             self._editorWidget.value = int(value)
-
 
         Logger.info("Config: " + self.section + self.key + " set to " + str(value))
         config.set(self.section, self.key, value)

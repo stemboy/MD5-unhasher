@@ -1,36 +1,42 @@
 <ConfigItem>:
     size_hint: 1, None
-    height: str(int(text_font_size.replace("sp", "")) * 2) + "sp"
+    height: str((int(text_font_size.replace("sp", "")) * 2) + 25) + "sp"
 
-    Label:
-        id: Title
+    padding: "10sp"
 
-        pos_hint: {"x": 0, "top": 1}
-        size_hint: 0.5, None
-        height: text_font_size
-        font_size: text_font_size
-        text_size: self.size
+    FloatLayout:
+        pos: self.parent.pos
+        size: self.parent.size
 
-        text: "Title"
-        halign: "left"
-        underline: True
+        Label:
+            id: Title
 
-    Label:
-        id: Description
+            pos_hint: {"x": 0, "top": 1}
+            size_hint: 0.5, None
+            height: text_font_size
+            font_size: text_font_size
+            text_size: self.size
 
-        pos_hint: {"x": 0, "y": 0}
-        size_hint: 0.5, None
-        height: text_font_size
-        font_size: text_font_size
-        text_size: self.size
+            text: "Title"
+            halign: "left"
+            underline: True
 
-        text: "Description"
-        halign: "left"
-        underline: False
+        Label:
+            id: Description
 
-    BoxLayout:
-        id: EditorHolder
+            pos_hint: {"x": 0, "y": 0}
+            size_hint: 0.5, None
+            height: text_font_size
+            font_size: text_font_size
+            text_size: self.size
 
-        pos_hint: {"right": 1, "y": 0}
-        size_hint: 0.5, None
-        height: str(int(text_font_size.replace("sp", "")) * 2) + "sp"
+            text: "Description"
+            halign: "left"
+            underline: False
+
+        BoxLayout:
+            id: EditorHolder
+
+            pos_hint: {"right": 1, "y": 0}
+            size_hint: 0.5, None
+            height: str(int(text_font_size.replace("sp", "")) * 2) + "sp"
