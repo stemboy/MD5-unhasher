@@ -2,5 +2,5 @@ def toggleButtonSelect(toggleButton):
     toggleButton.state = "down"
 
 
-def randomFunction(*args, **kwargs):
+def emptyFunction(*args, **kwargs):
     pass

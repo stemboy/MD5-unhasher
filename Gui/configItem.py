@@ -8,7 +8,7 @@ from kivy.uix.switch import Switch
 from kivy.uix.textinput import TextInput
 
 from misc.config import config
-from misc.functions import randomFunction
+from misc.functions import emptyFunction
 
 
 class ConfigItem(BoxLayout):
@@ -99,7 +99,7 @@ class ConfigItem(BoxLayout):
                 dropDown.add_widget(btn)
 
             self._editorWidget.bind(on_release=dropDown.open)
-            self._editorWidget.bind(on_release=lambda *args: randomFunction(dropDown.children))
+            self._editorWidget.bind(on_release=lambda *args: emptyFunction(dropDown.children))
             dropDown.bind(on_select=lambda instance, x: setattr(self._editorWidget, 'text', x))
             dropDown.bind(on_select=self.value_changed)
 
