@@ -1,6 +1,8 @@
-from kivy.properties import OptionProperty, StringProperty, ObjectProperty, NumericProperty
+from kivy.properties import OptionProperty, StringProperty, ObjectProperty, NumericProperty, ListProperty
 from kivy.logger import Logger
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.dropdown import DropDown
 from kivy.uix.slider import Slider
 from kivy.uix.switch import Switch
 from kivy.uix.textinput import TextInput
@@ -9,15 +11,22 @@ from misc.config import config
 
 
 class ConfigItem(BoxLayout):
-    type = OptionProperty("string", options=["numericSlider", "numeric", "string", "bool"])
+    # General options
+    type = OptionProperty("string", options=["numericSlider", "numeric", "string", "bool", "option"])
     title = StringProperty("Title")
     description = StringProperty("Description")
+    section = StringProperty("")
+    key = StringProperty("")
+
+    # Numeric slider options
     min = NumericProperty(None)
     max = NumericProperty(None)
     sliderMin = NumericProperty(None)
     sliderMax = NumericProperty(None)
-    section = StringProperty("")
-    key = StringProperty("")
+
+    # Option options
+    options = ListProperty([])
+
 
     _editorHolder = ObjectProperty()
     _editorWidget = ObjectProperty()
@@ -77,6 +86,20 @@ class ConfigItem(BoxLayout):
                                            text=config.get(self.section, self.key))
             self._editorWidget.bind(on_text_validate=lambda *args: self.value_changed(None, self._editorWidget.text))
             self._editorWidget.bind(focus=lambda *args: self.value_changed(None, self._editorWidget.text))
+
+        elif self.type == "option":
+            self._editorWidget = Button(text=config.get(self.section, self.key))
+
+            dropDown = DropDown()
+
+            for option in self.options:
+                btn = Button(text=option, size_hint_y=None, height=44)
+                btn.bind(on_release=lambda _btn: dropDown.select(_btn.text))
+                dropDown.add_widget(btn)
+
+            self._editorWidget.bind(on_release=dropDown.open)
+            dropDown.bind(on_select=lambda instance, x: setattr(self._editorWidget, 'text', x))
+            dropDown.bind(on_select=self.value_changed)
 
 
         if self._editorWidget2 is not None:
