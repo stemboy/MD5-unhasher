@@ -94,7 +94,7 @@ class ConfigItem(BoxLayout):
             dropDown = DropDown()
 
             for option in self.options:
-                btn = Button(text=option, size_hint_y=None, height=44)
+                btn = Button(text=option, size_hint_y=None, height=self.height)
                 btn.bind(on_release=lambda _btn: dropDown.select(_btn.text))
                 dropDown.add_widget(btn)
 
