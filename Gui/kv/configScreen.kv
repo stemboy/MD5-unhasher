@@ -1,123 +1,160 @@
 <ConfigScreen>:
-    ConfigLayout:
-        id: ConfigLayout
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
 
-        size_hint: 1, 1
+        ConfigLayout:
+            id: ConfigLayout
 
-        orientation: "vertical"
+            size_hint: 1, None
+            height: sum([c.height for c in self.children]) - Spacer.height
+
+            orientation: "vertical"
 
 
-        ConfigItem:
-            type: "title"
-            title: "Custom Mining Settings"
-            description: "Settings for custom mining sessions"
+            ConfigItem:
+                type: "title"
+                title: "General Mining Settings"
+                description: "Settings normal mining and custom mining"
 
-        ConfigItem:
-            type: "numericSlider"
-            title: "Minimum Length"
-            description: "Minimum length of strings to generate"
+            ConfigItem:
+                type: "option"
+                title: "Encryption Type"
+                description: "Which encryption type to use"
 
-            min: 1
-            sliderMin: 1
-            max: None
-            sliderMax: 10
+                options: ["md5", "sha1", "sha3-256"]
 
-            section: "string_content"
-            key: "min_length"
+                section: "encryption"
+                key: "type"
 
-        ConfigItem:
-            type: "numericSlider"
-            title: "Maximum Length"
-            description: "Maximum length of strings to generate"
+            ConfigItem:
+                type: "numericSlider"
+                title: "Processes"
+                description: "The amount of processes to create"
 
-            min: 1
-            sliderMin: 1
-            max: None
-            sliderMax: 10
+                min: 1
+                sliderMin: 1
+                max: None
+                sliderMax: 64
 
-            section: "string_content"
-            key: "max_length"
+                section: "string_creation"
+                key: "processes"
 
-        ConfigItem:
-            type: "bool"
-            title: "Lowercase Letters"
-            description: "Include lowercase letters in string generation"
+            ConfigItem:
+                type: "numericSlider"
+                title: "Length For New Process"
+                description: "The length it needs to be to start multiprocessing"
 
-            section: "character_types"
-            key: "lowercase"
+                min: 1
+                sliderMin: 1
+                max: None
+                sliderMax: 50
 
-        ConfigItem:
-            type: "string"
-            title: "Lowercase Letters"
-            description: "Lowercase letters to use"
+                section: "string_creation"
+                key: "length_for_new_process"
 
-            section: "string_character_types"
-            key: "lowercase"
+            ConfigItem:
+                type: "title"
+                title: "Custom Mining Settings"
+                description: "Settings for custom mining sessions"
 
-        ConfigItem:
-            type: "bool"
-            title: "Uppercase Letters"
-            description: "Include uppercase letters in string generation"
+            ConfigItem:
+                type: "numericSlider"
+                title: "Minimum Length"
+                description: "Minimum length of strings to generate"
 
-            section: "character_types"
-            key: "uppercase"
+                min: 1
+                sliderMin: 1
+                max: None
+                sliderMax: 10
 
-        ConfigItem:
-            type: "string"
-            title: "Uppercase Letters"
-            description: "Uppercase letters to use"
+                section: "string_content"
+                key: "min_length"
 
-            section: "string_character_types"
-            key: "uppercase"
+            ConfigItem:
+                type: "numericSlider"
+                title: "Maximum Length"
+                description: "Maximum length of strings to generate"
 
-        ConfigItem:
-            type: "bool"
-            title: "Numbers"
-            description: "Include numbers in string generation"
+                min: 1
+                sliderMin: 1
+                max: None
+                sliderMax: 10
 
-            section: "character_types"
-            key: "numbers"
+                section: "string_content"
+                key: "max_length"
 
-        ConfigItem:
-            type: "string"
-            title: "Numbers"
-            description: "Numbers to use"
+            ConfigItem:
+                type: "bool"
+                title: "Lowercase Letters"
+                description: "Include lowercase letters in string generation"
 
-            section: "string_character_types"
-            key: "numbers"
+                section: "character_types"
+                key: "lowercase"
 
-        ConfigItem:
-            type: "bool"
-            title: "Special Characters"
-            description: "Include special characters in string generation"
+            ConfigItem:
+                type: "string"
+                title: "Lowercase Letters"
+                description: "Lowercase letters to use"
 
-            section: "character_types"
-            key: "special"
+                section: "string_character_types"
+                key: "lowercase"
 
-        ConfigItem:
-            type: "string"
-            title: "Special Characters"
-            description: "Special characters to use"
+            ConfigItem:
+                type: "bool"
+                title: "Uppercase Letters"
+                description: "Include uppercase letters in string generation"
 
-            section: "string_character_types"
-            key: "special"
+                section: "character_types"
+                key: "uppercase"
 
-        ConfigItem:
-            type: "bool"
-            title: "Spaces"
-            description: "Include spaces in string generation"
+            ConfigItem:
+                type: "string"
+                title: "Uppercase Letters"
+                description: "Uppercase letters to use"
 
-            section: "character_types"
-            key: "space"
+                section: "string_character_types"
+                key: "uppercase"
 
-        ConfigItem:
-            type: "option"
-            title: "Encryption Type"
-            description: "Which encryption type to use"
+            ConfigItem:
+                type: "bool"
+                title: "Numbers"
+                description: "Include numbers in string generation"
 
-            options: ["md5", "sha1", "sha3-256"]
+                section: "character_types"
+                key: "numbers"
 
-            section: "encryption"
-            key: "type"
+            ConfigItem:
+                type: "string"
+                title: "Numbers"
+                description: "Numbers to use"
 
-        Widget:
+                section: "string_character_types"
+                key: "numbers"
+
+            ConfigItem:
+                type: "bool"
+                title: "Special Characters"
+                description: "Include special characters in string generation"
+
+                section: "character_types"
+                key: "special"
+
+            ConfigItem:
+                type: "string"
+                title: "Special Characters"
+                description: "Special characters to use"
+
+                section: "string_character_types"
+                key: "special"
+
+            ConfigItem:
+                type: "bool"
+                title: "Spaces"
+                description: "Include spaces in string generation"
+
+                section: "character_types"
+                key: "space"
+
+            Widget:
+                id: Spacer
