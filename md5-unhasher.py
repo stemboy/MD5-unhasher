@@ -1,4 +1,5 @@
 from shutil import copyfile
+
 import appdirs
 import os
 from multiprocessing import freeze_support
@@ -50,13 +51,34 @@ if __name__ == "__main__":
 
     elif args[-1] == "--array-create-only":
 
-
         Logger.info("App: Running the array creator only")
 
         import misc
         from misc.array_creator import create
 
         create()
+
+    elif "--time-array-create" in args:
+        Logger.info("App: Timing the array creator")
+        import timeit
+        from statistics import mean, median, mode
+
+        if args[-2] == "--time-array-create":
+            times = int(args[-1])
+        else:
+            Logger.warning("Timer: no option in amount of times given, defaulting to 10")
+            times = 10
+
+        timeArray = sorted(timeit.Timer(stmt="create(no_save=True)",
+                                        setup="import misc; from misc.array_creator import create").repeat(times, 1))
+
+        Logger.info("Timer: Raw times - " + str(timeArray))
+        Logger.info("Timer: Mean time - " + str(mean(timeArray)))
+        Logger.info("Timer: Median time - " + str(median(timeArray)))
+        Logger.info("Timer: Range time - " + str(timeArray[0]-timeArray[-1]))
+
+
+
 
     elif args[-1] == "--normal":
         Logger.info("App: Running the program as normal")
@@ -74,7 +96,8 @@ if __name__ == "__main__":
                        "Usages md5-unhasher.py [Option]\n" +
                        "                       --help               - Show this page\n" +
                        "                       --gui-only           - Run only the gui\n" +
-                       "                       --array-create-only  - Run the array creator only\n")
+                       "                       --array-create-only  - Run the array creator only\n" +
+                       "                       -time-array-create [times]  - Time the array creator\n")
         Logger.info("App: Running the program as normal")
 
         # Nothing here, no program in place yet

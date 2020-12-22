@@ -67,7 +67,7 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, i
         pool.join()
 
 
-def create():
+def create(no_save=False):
     total_start_time = time.time()
     print("Possible characters:", possibleCharacters)
     print("\n")
@@ -105,33 +105,34 @@ def create():
 
         last_len = len(hash_dataset)
 
-    usrDataDir = os.path.join(appdirs.user_data_dir(), "md5-unhasher")
+    if not no_save:
+        usrDataDir = os.path.join(appdirs.user_data_dir(), "md5-unhasher")
 
-    if not os.path.exists(os.path.join(usrDataDir, "encryption_datasets")):
-        os.mkdir(os.path.join(usrDataDir, "encryption_datasets"))
-        print("encryption_datasets folder does not exist so was created")
+        if not os.path.exists(os.path.join(usrDataDir, "encryption_datasets")):
+            os.mkdir(os.path.join(usrDataDir, "encryption_datasets"))
+            print("encryption_datasets folder does not exist so was created")
 
-    name = config.get("encryption", "type") + "_" + possibleCharacters + "_" + \
-           config.get("string_content", "min_length") + "_to_" + \
-           config.get("string_content", "max_length") + '.hash_to_string_dataset.json'
-    path = os.path.join(usrDataDir, "encryption_datasets", name)
+        name = config.get("encryption", "type") + "_" + possibleCharacters + "_" + \
+               config.get("string_content", "min_length") + "_to_" + \
+               config.get("string_content", "max_length") + '.hash_to_string_dataset.json'
+        path = os.path.join(usrDataDir, "encryption_datasets", name)
 
-    with open(path, 'w') as outfile:
-        start_time = time.time()
-        all_hash_dataset_and_arrays = dict(zip(hash_dataset, string_dataset))
-        json.dump(all_hash_dataset_and_arrays, outfile, indent=4)
-        end_time = time.time()
+        with open(path, 'w') as outfile:
+            start_time = time.time()
+            all_hash_dataset_and_arrays = dict(zip(hash_dataset, string_dataset))
+            json.dump(all_hash_dataset_and_arrays, outfile, indent=4)
+            end_time = time.time()
 
-        print("Saved", len(all_hash_dataset_and_arrays), "strings in", end_time - start_time, "seconds")
-        print("\n")
+            print("Saved", len(all_hash_dataset_and_arrays), "strings in", end_time - start_time, "seconds")
+            print("\n")
 
-    total_end_time = time.time()
+        total_end_time = time.time()
 
-    print("Generated and saved", len(hash_dataset), "hashes and strings, of", config["string_content"]["min_length"], "to",
-          config.getint("string_content", "max_length"),
-          "in length, with the characters '" + str(possibleCharacters) + "' in",
-          total_end_time - total_start_time, "seconds")
-    print("The dataset's file(s) is (are) at", path)
+        print("Generated and saved", len(hash_dataset), "hashes and strings, of", config["string_content"]["min_length"], "to",
+              config.getint("string_content", "max_length"),
+              "in length, with the characters '" + str(possibleCharacters) + "' in",
+              total_end_time - total_start_time, "seconds")
+        print("The dataset's file(s) is (are) at", path)
 
 
 if __name__ == '__main__':
