@@ -14,7 +14,8 @@ class EncryptionDropDown(BoxLayout):
         self.create()
 
     def create(self):
-        customHashToStringFiles = [str(os.path.splitext(path)[0]) for path in os.listdir(os.path.join(user_data_dir(), "md5-unhasher", "encryptions"))]
+        customHashToStringFiles = [str(os.path.splitext(path)[0])
+                                   for path in os.listdir(os.path.join(user_data_dir(), "md5-unhasher", "encryptions"))]
 
         self.dropDown.clear_widgets()
         self.remove_widget(self.mainButton)
