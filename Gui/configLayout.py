@@ -23,7 +23,8 @@ class ConfigLayout(BoxLayout):
 
     def draw_bg(self, *args):
         n = 0
-        colors = (0.1, 0.1, 0.1), (0.2, 0.2, 0.2)
+        colors = (0.1, 0.1, 0.1), (0.15, 0.15, 0.15)
+        title_color = (0.3, 0.3, 0.3)
 
         with self.canvas.before:
             self.canvas.before.clear()
@@ -31,7 +32,10 @@ class ConfigLayout(BoxLayout):
             for child in self.children:
                 if child.__class__.__name__ != "Widget":
 
-                    Color(rgb=colors[n], a=child.opacity)
+                    if child.type == "title":
+                        Color(rgb=title_color, a=child.opacity)
+                    else:
+                        Color(rgb=colors[n], a=child.opacity)
                     Rectangle(pos=child.pos, size=(Window.width, child.height))
 
                 n = (n + 1) % 2
