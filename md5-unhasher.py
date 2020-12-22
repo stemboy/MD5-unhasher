@@ -34,11 +34,13 @@ if __name__ == "__main__":
     Logger.info("Arguments: Program ran with the args " + str(sys.argv))
 
     if args[-1] == "--help":
-        Logger.info("Help: \n" +
-                    "Usages md5-unhasher.py [Option]\n" +
-                    "                       --help               - Show this page\n" +
-                    "                       --gui-only           - Run only the gui\n" +
-                    "                       --array-create-only  - Run the array creator only\n")
+        Logger.warning("Arguments: No arguments were given or the given arguments were not correct,\n" +
+                       "Usages md5-unhasher.py [Option]\n" +
+                       "                       --help               - Show this page\n" +
+                       "                       --gui-only           - Run only the gui\n" +
+                       "                       --array-create-only  - Run the array creator only\n" +
+                       "                       --time-array-create  - Time the array creator\n" +
+                       "                       --normal             - Run the app normally\n")
 
     elif args[-1] == "--gui-only":
         Logger.info("App: Running with the gui only")
@@ -95,7 +97,8 @@ if __name__ == "__main__":
                        "                       --help               - Show this page\n" +
                        "                       --gui-only           - Run only the gui\n" +
                        "                       --array-create-only  - Run the array creator only\n" +
-                       "                       -time-array-create [times]  - Time the array creator\n")
+                       "                       --time-array-create  - Time the array creator\n" +
+                       "                       --normal             - Run the app normally\n")
         Logger.info("App: Running the program as normal")
 
         # Nothing here, no program in place yet
