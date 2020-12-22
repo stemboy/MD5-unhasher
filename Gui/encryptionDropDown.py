@@ -1,6 +1,7 @@
 import os
 
 from appdirs import user_data_dir
+from kivy import Logger
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.dropdown import DropDown
@@ -16,6 +17,7 @@ class EncryptionDropDown(BoxLayout):
     def create(self):
         customHashToStringFiles = [str(os.path.splitext(path)[0])
                                    for path in os.listdir(os.path.join(user_data_dir(), "md5-unhasher", "encryptions"))]
+        Logger.debug("Encryption DropDown: Loaded custom encryption files")
 
         self.dropDown.clear_widgets()
         self.remove_widget(self.mainButton)
