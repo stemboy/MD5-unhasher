@@ -5,8 +5,10 @@ import time
 import os
 
 import appdirs
+from kivy import Logger
 
 from misc.config import config
+from misc.functions import log
 
 possibleCharacters = ""
 
@@ -22,22 +24,22 @@ if config.getboolean("character_types", "space"):
     possibleCharacters = possibleCharacters + str(config.get("string_character_types", "space"))
 
 
-def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, is_outer=False, is_pool_outer=False,
+def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, print_func, is_outer=False, is_pool_outer=False,
                parent_character=None):
     if place == config.getint("string_creation", "length_for_new_process"):
         pool = multiprocessing.Pool(processes=config.getint("string_creation", "processes"))
-        print("New pool created")
-        print()
+        print_func("New pool created")
+        print_func()
 
     for character in possibleCharacters:
         current_str[place] = character
 
         if is_outer and config.getboolean("development", "outer_logging"):
-            print("Outer dataset maker | Progress = {:02d}".format(possibleCharacters.index(character) + 1), "out of",
+            print_func("Outer dataset maker | Progress = {:02d}".format(possibleCharacters.index(character) + 1), "out of",
                   len(possibleCharacters))
 
         elif is_pool_outer and config.getboolean("development", "pool_loop_outer_logging"):
-            print("Outest in pool loop dataset maker | Process = {:02d}".format(
+            print_func("Outest in pool loop dataset maker | Process = {:02d}".format(
                 multiprocessing.current_process()._identity[0]),
                 "| Parent Progress = {:02d}".format(possibleCharacters.index(parent_character) + 1), "out of",
                 "| Parent character = ", str(parent_character),
@@ -53,24 +55,26 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, i
         elif place == config.getint("string_creation", "length_for_new_process"):
 
             pool.apply_async(loop_digit,
-                             args=(current_str.copy(), place - 1, string_dataset, hash_dataset, encrypt_func),
+                             args=(current_str.copy(), place - 1, string_dataset, hash_dataset, encrypt_func, print_func),
                              kwds={"is_pool_outer": True, "parent_character": character})
 
         else:
-            loop_digit(current_str, place - 1, string_dataset, hash_dataset, encrypt_func)
+            loop_digit(current_str, place - 1, string_dataset, hash_dataset, encrypt_func, print_func)
 
     if place == config.getint("string_creation", "length_for_new_process"):
-        print()
-        print("Waiting for pool to finish")
-        print()
+        print_func()
+        print_func("Waiting for pool to finish")
+        print_func()
         pool.close()
         pool.join()
 
 
 def create(no_save=False):
+    print_func = log
+
     total_start_time = time.time()
-    print("Possible characters:", possibleCharacters)
-    print("\n")
+    print_func("Possible characters:", possibleCharacters)
+    print_func("\n")
 
     last_len = 0
 
@@ -87,21 +91,21 @@ def create(no_save=False):
     else:
         raise Exception(config.get("encryption", "type") + " is not a valid encryption type (md5, sha1, sha3-256)")
 
-    print("Encrypting with", config.get("encryption", "type"), "using the func", encrypt_func)
+    print_func("Encrypting with", config.get("encryption", "type"), "using the func", encrypt_func)
 
     for string_length in range(config.getint("string_content", "min_length"),
                                config.getint("string_content", "max_length") + 1):
-        print("Generating strings with", string_length, "characters")
+        print_func("Generating strings with", string_length, "characters")
 
         start_time = time.time()
 
         current_string = ["□" for _ in range(string_length)]
-        loop_digit(current_string, string_length - 1, string_dataset, hash_dataset, encrypt_func, is_outer=True)
+        loop_digit(current_string, string_length - 1, string_dataset, hash_dataset, encrypt_func, print_func, is_outer=True)
 
         end_time = time.time()
 
-        print("Created", len(hash_dataset) - last_len, "strings and hashes in", end_time - start_time, "seconds")
-        print("\n")
+        print_func("Created", len(hash_dataset) - last_len, "strings and hashes in", end_time - start_time, "seconds")
+        print_func("\n")
 
         last_len = len(hash_dataset)
 
@@ -110,7 +114,7 @@ def create(no_save=False):
 
         if not os.path.exists(os.path.join(usrDataDir, "encryption_datasets")):
             os.mkdir(os.path.join(usrDataDir, "encryption_datasets"))
-            print("encryption_datasets folder does not exist so was created")
+            print_func("encryption_datasets folder does not exist so was created")
 
         name = config.get("encryption", "type") + "_" + possibleCharacters + "_" + \
                config.get("string_content", "min_length") + "_to_" + \
@@ -123,16 +127,16 @@ def create(no_save=False):
             json.dump(all_hash_dataset_and_arrays, outfile, indent=4)
             end_time = time.time()
 
-            print("Saved", len(all_hash_dataset_and_arrays), "strings in", end_time - start_time, "seconds")
-            print("\n")
+            print_func("Saved", len(all_hash_dataset_and_arrays), "strings in", end_time - start_time, "seconds")
+            print_func("\n")
 
         total_end_time = time.time()
 
-        print("Generated and saved", len(hash_dataset), "hashes and strings, of", config["string_content"]["min_length"], "to",
+        print_func("Generated and saved", len(hash_dataset), "hashes and strings, of", config["string_content"]["min_length"], "to",
               config.getint("string_content", "max_length"),
               "in length, with the characters '" + str(possibleCharacters) + "' in",
               total_end_time - total_start_time, "seconds")
-        print("The dataset's file(s) is (are) at", path)
+        print_func("The dataset's file(s) is (are) at", path)
 
 
 if __name__ == '__main__':
