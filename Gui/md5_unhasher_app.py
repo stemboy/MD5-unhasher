@@ -3,6 +3,7 @@ from kivy.app import App
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import BooleanProperty
+from kivy.metrics import cm
 
 from Gui import kv
 from Gui.ScreenManager import ScreenManager
@@ -25,8 +26,9 @@ class Md5_unhasher_app(App):
             Builder.load_file(kvFilePath)
         Logger.info("App: Built kv")
 
-        Window.minimum_width, Window.minimum_height = "25cm", " 25cm"
-        Window.size = Window.minimum_width, Window.minimum_height
+        Window.size = cm(23), cm(18)
+        Window.minimum_width, Window.minimum_height = cm(23), cm(18)
+        Window.bind(size=print)
         Logger.info("App: Set window size and minimum size")
 
         return Parent()
