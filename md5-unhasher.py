@@ -69,7 +69,7 @@ if __name__ == "__main__":
         Logger.info("Timer: looping " + times)
 
         timeArray = sorted(timeit.Timer(stmt="create(no_save=True)",
-                                        setup="import misc; from misc.array_creator import create").repeat(int(times),
+                                        setup="import misc; from misc.dataset_creator import create").repeat(int(times),
                                                                                                            1))
 
         Logger.info("Timer: Raw times - " + str(timeArray))
