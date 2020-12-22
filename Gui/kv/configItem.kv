@@ -1,6 +1,6 @@
 <ConfigItem>:
     size_hint: 1, None
-    height: str((int(text_font_size.replace("sp", "")) * 2) + 25) + "sp"
+    height: sp(text_font_size.replace("sp", "")) * 2 + sp(25)
 
     padding: "10sp"
 
@@ -39,4 +39,4 @@
 
             pos_hint: {"right": 1, "y": 0}
             size_hint: 0.5, None
-            height: str(int(text_font_size.replace("sp", "")) * 2) + "sp"
+            height: sp(text_font_size.replace("sp", "")) * 2
