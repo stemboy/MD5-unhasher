@@ -9,18 +9,20 @@
 
             border: (2,2,2,2)
 
-            hint_text: "Decrypt"
+            hint_text: "Encrypted Text"
             font_size: text_font_size
 
             multiline: False
 
         TextInput:
+            id: DecryptedText
+
             pos_hint: {"x": 0.6, "y": 0}
             size_hint: 0.4, 1
 
             border: (2,2,2,2)
 
-            hint_text: "Encrypt"
+            hint_text: "Decrypted Text"
             font_size: text_font_size
 
         Button:
@@ -29,9 +31,13 @@
 
             border: (10,10,10,10)
 
-            text: "Activate"
+            text: "Decrypt"
             font_size: text_font_size
 
+            on_release: root.decrypt()
+
         EncryptionDropDown:
+            id: EncryptionType
+
             pos_hint: {"x": 0.4, "y":0.4}
             size_hint: 0.2, 0.1
