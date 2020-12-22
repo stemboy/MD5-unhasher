@@ -3,23 +3,25 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.dropdown import DropDown
 
+from misc.functions import emptyFunction
+
 
 class EncryptionBox(BoxLayout):
     buttons = ListProperty([])
+    dropDown = DropDown()
+    mainButton = Button(size_hint=(1, 1))
 
     def on_kv_post(self, base_widget):
-        dropdown = DropDown()
-
         for text in self.buttons:
-            btn = Button(text=text)
-            btn.bind(on_release=lambda _btn: dropdown.select(_btn.text))
+            btn = Button(text=text, size_hint_y=None, height=20)
+            btn.bind(on_release=lambda _btn: self.dropDown.select(_btn.text))
 
-            dropdown.add_widget(btn)
+            self.dropDown.add_widget(btn)
 
-        mainbutton = Button(text=self.buttons[0], size_hint=(None, None))
-        mainbutton.bind(on_release=dropdown.open)
+        self.mainButton.text = self.buttons[0]
+        self.mainButton.bind(on_release=self.dropDown.open)
 
-        dropdown.bind(on_select=lambda instance, x: setattr(mainbutton, 'text', x))
+        self.dropDown.bind(on_select=lambda instance, x: setattr(self.mainButton, 'text', x))
 
-        self.add_widget(dropdown)
+        self.add_widget(self.mainButton)
 
