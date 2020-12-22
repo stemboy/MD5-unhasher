@@ -59,9 +59,15 @@ if __name__ == "__main__":
         create()
 
     elif args[-1] == "--normal":
-
-
         Logger.info("App: Running the program as normal")
+
+        import Gui
+        from Gui import Md5_unhasher_app
+
+        import misc
+
+        app = Md5_unhasher_app()
+        app.run()
 
     else:
         Logger.warning("Arguments: No arguments were given or the given arguments were not correct,\n" +
