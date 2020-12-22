@@ -3,8 +3,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.dropdown import DropDown
 
-from misc.functions import emptyFunction
-
 
 class EncryptionBox(BoxLayout):
     buttons = ListProperty([])
