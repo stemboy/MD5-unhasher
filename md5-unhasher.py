@@ -56,7 +56,7 @@ if __name__ == "__main__":
         Logger.info("App: Running the array creator only")
 
         import misc
-        from misc.array_creator import create
+        from misc.dataset_creator import create
 
         create()
 

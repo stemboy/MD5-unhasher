@@ -18,4 +18,4 @@ def log(*texts):
         Logger.info("")
 
     else:
-        Logger.info("Array Creator: " + " ".join([str(text) for text in texts]))
+        Logger.info("Dataset Creator: " + " ".join([str(text) for text in texts]))
