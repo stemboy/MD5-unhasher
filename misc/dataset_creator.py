@@ -4,7 +4,6 @@ import multiprocessing
 import time
 import os
 
-import appdirs
 from kivy import Logger
 
 from misc.config import config
