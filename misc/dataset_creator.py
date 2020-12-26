@@ -23,9 +23,10 @@ if config.getboolean("character_types", "space"):
     possibleCharacters = possibleCharacters + str(config.get("string_character_types", "space"))
 
 
-def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, print_func, no_save, is_outer=False, is_pool_outer=False,
+def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, print_func, no_save,
+               length_for_new_process, is_outer=False, is_pool_outer=False,
                parent_character=None):
-    if place == config.getint("string_creation", "length_for_new_process"):
+    if place == length_for_new_process:
         pool = multiprocessing.Pool(processes=config.getint("string_creation", "processes"))
         print_func("New pool created")
         print_func()
@@ -34,8 +35,9 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, p
         current_str[place] = character
 
         if is_outer and config.getboolean("development", "outer_logging"):
-            print_func("Outer dataset maker | Progress = {:02d}".format(possibleCharacters.index(character) + 1), "out of",
-                  len(possibleCharacters))
+            print_func("Outer dataset maker | Progress = {:02d}".format(possibleCharacters.index(character) + 1),
+                       "out of",
+                       len(possibleCharacters))
 
         elif is_pool_outer and config.getboolean("development", "pool_loop_outer_logging"):
             print_func("Outest in pool loop dataset maker | Process = {:02d}".format(
@@ -51,16 +53,18 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, p
             hash_dataset.append(encrypt_func(string.encode()).hexdigest())
             string_dataset.append(string)
 
-        elif place == config.getint("string_creation", "length_for_new_process"):
+        elif place == length_for_new_process:
 
             pool.apply_async(loop_digit,
-                             args=(current_str.copy(), place - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save),
+                             args=(current_str.copy(), place - 1, string_dataset, hash_dataset, encrypt_func,
+                                   print_func, no_save, length_for_new_process),
                              kwds={"is_pool_outer": True, "parent_character": character})
 
         else:
-            loop_digit(current_str, place - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save)
+            loop_digit(current_str, place - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save,
+                       length_for_new_process)
 
-    if place == config.getint("string_creation", "length_for_new_process"):
+    if place == length_for_new_process:
         print_func()
         print_func("Waiting for pool to finish")
         print_func()
@@ -99,7 +103,7 @@ def create(no_save=False):
         start_time = time.time()
 
         current_string = ["□" for _ in range(string_length)]
-        loop_digit(current_string, string_length - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save,
+        loop_digit(current_string, string_length - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save, config.getint("string_creation", "length_for_new_process"),
                    is_outer=True)
 
         end_time = time.time()
