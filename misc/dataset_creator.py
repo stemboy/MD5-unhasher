@@ -5,6 +5,7 @@ import time
 import os
 
 import appdirs
+from kivy import Logger
 
 from misc.config import config
 from misc.functions import log, getUsrDataDir
@@ -24,7 +25,7 @@ if config.getboolean("character_types", "space"):
 
 
 def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, print_func, no_save,
-               length_for_new_process, is_outer=False, is_pool_outer=False,
+               length_for_new_process, save_mode, is_outer=False, is_pool_outer=False,
                parent_character=None):
     if place == length_for_new_process:
         pool = multiprocessing.Pool(processes=config.getint("string_creation", "processes"))
@@ -53,16 +54,26 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, p
             hash_dataset.append(encrypt_func(string.encode()).hexdigest())
             string_dataset.append(string)
 
+            if save_mode != "one_file" and save_mode != "mass_mini_file":
+                if save_mode == "mass_file":
+                    pass
+
+                elif save_mode == "folder":
+                    pass
+
+                else:
+                    Logger.critical("Dataset Creator: " + str(save_mode) + " is not a valid save mode")
+
         elif place == length_for_new_process:
 
             pool.apply_async(loop_digit,
                              args=(current_str.copy(), place - 1, string_dataset, hash_dataset, encrypt_func,
-                                   print_func, no_save, length_for_new_process),
+                                   print_func, no_save, length_for_new_process, save_mode),
                              kwds={"is_pool_outer": True, "parent_character": character})
 
         else:
             loop_digit(current_str, place - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save,
-                       length_for_new_process)
+                       length_for_new_process, save_mode)
 
     if place == length_for_new_process:
         print_func()
@@ -103,8 +114,9 @@ def create(no_save=False):
         start_time = time.time()
 
         current_string = ["□" for _ in range(string_length)]
-        loop_digit(current_string, string_length - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save, config.getint("string_creation", "length_for_new_process"),
-                   is_outer=True)
+        loop_digit(current_string, string_length - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save,
+                   config.getint("string_creation", "length_for_new_process"),
+                   config.get("string_creation", "save_mode"), is_outer=True)
 
         end_time = time.time()
 
