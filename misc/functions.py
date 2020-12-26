@@ -25,7 +25,7 @@ def log(*texts):
 
 
 def decrypt(hash, filename):
-    os.path.join(getUsrDataDir(), "encryption_datasets")
+    path = os.path.join(getUsrDataDir(), "encryption_datasets", filename)
 
 
 def getUsrDataDir():
