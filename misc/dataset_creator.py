@@ -23,7 +23,7 @@ if config.getboolean("character_types", "space"):
     possibleCharacters = possibleCharacters + str(config.get("string_character_types", "space"))
 
 
-def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, print_func, is_outer=False, is_pool_outer=False,
+def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, print_func, no_save, is_outer=False, is_pool_outer=False,
                parent_character=None):
     if place == config.getint("string_creation", "length_for_new_process"):
         pool = multiprocessing.Pool(processes=config.getint("string_creation", "processes"))
@@ -54,11 +54,11 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, p
         elif place == config.getint("string_creation", "length_for_new_process"):
 
             pool.apply_async(loop_digit,
-                             args=(current_str.copy(), place - 1, string_dataset, hash_dataset, encrypt_func, print_func),
+                             args=(current_str.copy(), place - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save),
                              kwds={"is_pool_outer": True, "parent_character": character})
 
         else:
-            loop_digit(current_str, place - 1, string_dataset, hash_dataset, encrypt_func, print_func)
+            loop_digit(current_str, place - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save)
 
     if place == config.getint("string_creation", "length_for_new_process"):
         print_func()
@@ -99,7 +99,8 @@ def create(no_save=False):
         start_time = time.time()
 
         current_string = ["□" for _ in range(string_length)]
-        loop_digit(current_string, string_length - 1, string_dataset, hash_dataset, encrypt_func, print_func, is_outer=True)
+        loop_digit(current_string, string_length - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save,
+                   is_outer=True)
 
         end_time = time.time()
 
@@ -108,7 +109,7 @@ def create(no_save=False):
 
         last_len = len(hash_dataset)
 
-    if not no_save:
+    if not no_save and config.get("string_creation", "save_mode") == "one_file":
         if not os.path.exists(os.path.join(getUsrDataDir(), "encryption_datasets")):
             os.mkdir(os.path.join(getUsrDataDir(), "encryption_datasets"))
             print_func("encryption_datasets folder does not exist so was created")
@@ -129,10 +130,13 @@ def create(no_save=False):
 
         total_end_time = time.time()
 
-        print_func("Generated and saved", len(hash_dataset), "hashes and strings, of", config["string_content"]["min_length"], "to",
-              config.getint("string_content", "max_length"),
-              "in length, with the characters '" + str(possibleCharacters) + "' in",
-              total_end_time - total_start_time, "seconds")
+    print_func("Generated and saved (unless no_save was true)", len(hash_dataset), "hashes and strings, of",
+               config["string_content"]["min_length"], "to",
+               config.getint("string_content", "max_length"),
+               "in length, with the characters '" + str(possibleCharacters) + "' in",
+               total_end_time - total_start_time, "seconds")
+
+    if not no_save:
         print_func("The dataset's file(s) is (are) at", path)
 
 
