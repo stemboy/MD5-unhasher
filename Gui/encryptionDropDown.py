@@ -7,6 +7,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.dropdown import DropDown
 
+from misc.functions import getUsrDataDir
+
 
 class EncryptionDropDown(BoxLayout):
     dropDown = DropDown()
@@ -37,8 +39,7 @@ class EncryptionDropDown(BoxLayout):
 
         else:
             customHashToStringFiles = [str(os.path.splitext(path)[0])
-                                       for path in os.listdir(os.path.join(user_data_dir(),
-                                                                           "md5-unhasher", "encryption_datasets"))]
+                                       for path in os.listdir(os.path.join(getUsrDataDir(), "encryption_datasets"))]
             Logger.debug("Encryption DropDown: Loaded custom encryption files")
 
             for text in customHashToStringFiles:
