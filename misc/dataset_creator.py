@@ -7,7 +7,7 @@ import os
 import appdirs
 
 from misc.config import config
-from misc.functions import log
+from misc.functions import log, getUsrDataDir
 
 possibleCharacters = ""
 
@@ -109,16 +109,14 @@ def create(no_save=False):
         last_len = len(hash_dataset)
 
     if not no_save:
-        usrDataDir = os.path.join(appdirs.user_data_dir(), "md5-unhasher")
-
-        if not os.path.exists(os.path.join(usrDataDir, "encryption_datasets")):
-            os.mkdir(os.path.join(usrDataDir, "encryption_datasets"))
+        if not os.path.exists(os.path.join(getUsrDataDir(), "encryption_datasets")):
+            os.mkdir(os.path.join(getUsrDataDir(), "encryption_datasets"))
             print_func("encryption_datasets folder does not exist so was created")
 
         name = config.get("encryption", "type") + "_" + possibleCharacters + "_" + \
                config.get("string_content", "min_length") + "_to_" + \
                config.get("string_content", "max_length") + '.hash_to_string_dataset.json'
-        path = os.path.join(usrDataDir, "encryption_datasets", name)
+        path = os.path.join(getUsrDataDir(), "encryption_datasets", name)
 
         with open(path, 'w') as outfile:
             start_time = time.time()

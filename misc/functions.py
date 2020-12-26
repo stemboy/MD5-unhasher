@@ -1,3 +1,6 @@
+import os
+
+import appdirs
 from kivy import Logger
 
 
@@ -19,3 +22,11 @@ def log(*texts):
 
     else:
         Logger.info("Dataset Creator: " + " ".join([str(text) for text in texts]))
+
+
+def decrypt(hash, filename):
+    os.path.join(getUsrDataDir(), "encryption_datasets")
+
+
+def getUsrDataDir():
+    return os.path.join(appdirs.user_data_dir(), "md5-unhasher")
