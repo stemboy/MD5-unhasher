@@ -93,6 +93,10 @@ def create(no_save=False):
         config.get("string_content", "max_length")
 
     if not no_save:
+        if not os.path.exists(os.path.join(getUsrDataDir(), "encryption_datasets")):
+            os.mkdir(os.path.join(getUsrDataDir(), "encryption_datasets"))
+            print_func("encryption_datasets folder does not exist so was created")
+
         folder_path = os.path.join(getUsrDataDir(), "encryption_datasets", name)
         info_path = os.path.join(folder_path, "info.json")
 
