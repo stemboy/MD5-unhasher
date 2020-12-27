@@ -1,6 +1,6 @@
 from Gui.screen import Screen
 
 
-class HashingScreen(Screen):
+class MiningScreen(Screen):
     pass
 
