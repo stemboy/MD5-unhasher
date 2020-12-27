@@ -160,6 +160,7 @@ def create(no_save=False):
             start_time = time.time()
             all_hash_dataset_and_arrays = dict(zip(hash_dataset, string_dataset))
             json.dump(all_hash_dataset_and_arrays, outfile, indent=4)
+            outfile.close()
             end_time = time.time()
 
             print_func("Saved", len(all_hash_dataset_and_arrays), "strings in", end_time - start_time, "seconds")
