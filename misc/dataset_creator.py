@@ -116,7 +116,8 @@ def create(no_save=False):
             "encryption": config.get("encryption", "type"),
             "min_length": config.get("string_content", "min_length"),
             "max_length": config.get("string_content", "max_length"),
-            "characters": possibleCharacters
+            "characters": possibleCharacters,
+            "current_length": 0
         }
 
         with open(info_path, "w") as outfile:
@@ -165,6 +166,16 @@ def create(no_save=False):
         print_func("\n")
 
         last_len = len(hash_dataset)
+
+        if not no_save and config.get("string_creation", "save_mode") == "one_file":
+            pass
+
+        info["current_length"] = string_length
+
+        if not no_save:
+            with open(info_path, "w") as outfile:
+                json.dump(info, outfile, indent=4)
+                outfile.close()
 
     if not no_save and config.get("string_creation", "save_mode") == "one_file":
         with open(dataset_path, 'w') as outfile:
