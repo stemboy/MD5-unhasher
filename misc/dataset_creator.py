@@ -54,7 +54,7 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, p
             hash_dataset.append(encrypt_func(string.encode()).hexdigest())
             string_dataset.append(string)
 
-            if save_mode != "one_file" and save_mode != "mass_mini_file":
+            if save_mode != "one_file" and save_mode != "total_length":
                 if save_mode == "mass_file":
                     pass
 
@@ -171,7 +171,7 @@ def create(no_save=False):
 
         last_len = len(hash_dataset)
 
-        if not no_save and config.get("string_creation", "save_mode") == "mass_mini_file":
+        if not no_save and config.get("string_creation", "save_mode") == "total_length":
             with open(os.path.join(dataset_path, str(string_length) + ".json"), 'w') as outfile:
                 start_time = time.time()
                 all_hash_dataset_and_arrays = dict(zip(hash_dataset, string_dataset))
