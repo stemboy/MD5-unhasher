@@ -10,6 +10,8 @@
             text: "Start Mining"
             font_size: text_font_size
 
+            on_release: Logger.critical("App: Cannot start mining, gui_only is True") if app.gui_only else dataset_creator.create()
+
         Label:
             pos_hint: {"x": 0.5,"y": 0}
             size_hint: 0.5, 0.8
