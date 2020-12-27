@@ -1,13 +1,14 @@
 import hashlib
 import json
 import multiprocessing
+import shutil
 import time
 import os
 
 from kivy import Logger
 
 from misc.config import config
-from misc.functions import log, getUsrDataDir
+from misc.functions import log, getUsrDataDir, log_warning
 
 possibleCharacters = ""
 
@@ -84,6 +85,32 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, p
 
 def create(no_save=False):
     print_func = log
+    print_func_warning = log_warning
+
+
+    name = config.get("encryption", "type") + "_" + possibleCharacters + "_" + \
+        config.get("string_content", "min_length") + "_to_" + \
+        config.get("string_content", "max_length")
+
+    if not no_save:
+        folder_path = os.path.join(getUsrDataDir(), "encryption_datasets", name)
+
+        if os.path.exists(folder_path):
+            print_func_warning(name, "already exists, removing directory")
+            shutil.rmtree(folder_path)
+
+        os.mkdir(folder_path)
+        print_func("Created a new dataset folder")
+
+
+        if config.get("string_creation", "save_mode") == "one_file":
+            dataset_path = os.path.join(folder_path, "dataset.json")
+
+        else:
+            dataset_path = os.path.join(folder_path, "dataset")
+            os.mkdir(dataset_path)
+            print_func("Created a new dataset folder")
+
 
     total_start_time = time.time()
     print_func("Possible characters:", possibleCharacters)
@@ -129,12 +156,7 @@ def create(no_save=False):
             os.mkdir(os.path.join(getUsrDataDir(), "encryption_datasets"))
             print_func("encryption_datasets folder does not exist so was created")
 
-        name = config.get("encryption", "type") + "_" + possibleCharacters + "_" + \
-               config.get("string_content", "min_length") + "_to_" + \
-               config.get("string_content", "max_length") + '.hash_to_string_dataset.json'
-        path = os.path.join(getUsrDataDir(), "encryption_datasets", name)
-
-        with open(path, 'w') as outfile:
+        with open(dataset_path, 'w') as outfile:
             start_time = time.time()
             all_hash_dataset_and_arrays = dict(zip(hash_dataset, string_dataset))
             json.dump(all_hash_dataset_and_arrays, outfile, indent=4)
@@ -152,7 +174,7 @@ def create(no_save=False):
                total_end_time - total_start_time, "seconds")
 
     if not no_save:
-        print_func("The dataset's file(s) is (are) at", path)
+        print_func("The dataset's file(s) is (are) at", dataset_path)
 
 
 if __name__ == '__main__':

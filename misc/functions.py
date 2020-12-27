@@ -24,6 +24,10 @@ def log(*texts):
         Logger.info("Dataset Creator: " + " ".join([str(text) for text in texts]))
 
 
+def log_warning(*texts):
+    Logger.warning("Dataset Creator: " + " ".join([str(text) for text in texts]))
+
+
 def decrypt(hash, filename):
     path = os.path.join(getUsrDataDir(), "encryption_datasets", filename)
 
