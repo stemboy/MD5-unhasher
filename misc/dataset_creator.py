@@ -25,7 +25,7 @@ if config.getboolean("character_types", "space"):
 
 
 def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, print_func, no_save,
-               length_for_new_process, save_mode, is_outer=False, is_pool_outer=False,
+               length_for_new_process, save_mode, save_length, save_path, is_outer=False, is_pool_outer=False,
                parent_character=None):
     if place == length_for_new_process:
         pool = multiprocessing.Pool(processes=config.getint("string_creation", "processes"))
@@ -61,19 +61,19 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, p
                 elif save_mode == "folder":
                     pass
 
-                else:
+                elif not save_mode == "small_length":
                     Logger.critical("Dataset Creator: " + str(save_mode) + " is not a valid save mode")
 
         elif place == length_for_new_process:
 
             pool.apply_async(loop_digit,
                              args=(current_str.copy(), place - 1, string_dataset, hash_dataset, encrypt_func,
-                                   print_func, no_save, length_for_new_process, save_mode),
+                                   print_func, no_save, length_for_new_process, save_mode, save_length, save_path),
                              kwds={"is_pool_outer": True, "parent_character": character})
 
         else:
             loop_digit(current_str, place - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save,
-                       length_for_new_process, save_mode)
+                       length_for_new_process, save_mode, save_length, save_path)
 
     if place == length_for_new_process:
         print_func()
@@ -81,6 +81,30 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, p
         print_func()
         pool.close()
         pool.join()
+
+
+    if not no_save and save_mode == "small_length" and place == save_length:
+        stuff = current_str[place+1:]
+
+        if len(stuff) == 0:
+            stuff.append("IDKplaceIs " + str(place))
+
+
+        with open(os.path.join(save_path, "".join(stuff) + ".json"), 'w') as outfile:
+            start_time = time.time()
+            all_hash_dataset_and_arrays = dict(zip(hash_dataset, string_dataset))
+            json.dump(all_hash_dataset_and_arrays, outfile, indent=4)
+            outfile.close()
+            end_time = time.time()
+
+            print_func("\n")
+            print_func("Saved", len(all_hash_dataset_and_arrays), "strings in", end_time - start_time, "seconds")
+            print_func("\n")
+
+        string_dataset[:] = []
+        hash_dataset[:] = []
+
+
 
 
 def create(no_save=False):
@@ -162,7 +186,8 @@ def create(no_save=False):
         current_string = ["□" for _ in range(string_length)]
         loop_digit(current_string, string_length - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save,
                    config.getint("string_creation", "length_for_new_process"),
-                   config.get("string_creation", "save_mode"), is_outer=True)
+                   config.get("string_creation", "save_mode"), config.getint("string_creation", "save_length") - 1,
+                   dataset_path, is_outer=True)
 
         end_time = time.time()
 
