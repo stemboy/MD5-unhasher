@@ -94,6 +94,7 @@ def create(no_save=False):
 
     if not no_save:
         folder_path = os.path.join(getUsrDataDir(), "encryption_datasets", name)
+        info_path = os.path.join(folder_path, "info.json")
 
         if os.path.exists(folder_path):
             print_func_warning(name, "already exists, removing directory")
@@ -110,6 +111,20 @@ def create(no_save=False):
             dataset_path = os.path.join(folder_path, "dataset")
             os.mkdir(dataset_path)
             print_func("Created a new dataset folder")
+
+        info = {
+            "encryption": config.get("encryption", "type"),
+            "min_length": config.get("string_content", "min_length"),
+            "max_length": config.get("string_content", "max_length"),
+            "characters": possibleCharacters
+        }
+
+        with open(info_path, "w") as outfile:
+            json.dump(info, outfile, indent=4)
+            outfile.close()
+
+        print_func("Created info folder")
+        print_func("\n")
 
 
     total_start_time = time.time()
