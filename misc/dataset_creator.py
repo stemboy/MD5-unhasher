@@ -167,10 +167,6 @@ def create(no_save=False):
         last_len = len(hash_dataset)
 
     if not no_save and config.get("string_creation", "save_mode") == "one_file":
-        if not os.path.exists(os.path.join(getUsrDataDir(), "encryption_datasets")):
-            os.mkdir(os.path.join(getUsrDataDir(), "encryption_datasets"))
-            print_func("encryption_datasets folder does not exist so was created")
-
         with open(dataset_path, 'w') as outfile:
             start_time = time.time()
             all_hash_dataset_and_arrays = dict(zip(hash_dataset, string_dataset))
