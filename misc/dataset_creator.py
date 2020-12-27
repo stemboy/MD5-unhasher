@@ -186,9 +186,9 @@ def create(no_save=False):
             string_dataset[:] = []
             hash_dataset[:] = []
 
-        info["current_length"] = string_length
-
         if not no_save:
+            info["current_length"] = string_length
+
             with open(info_path, "w") as outfile:
                 json.dump(info, outfile, indent=4)
                 outfile.close()
