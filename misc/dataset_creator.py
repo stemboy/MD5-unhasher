@@ -171,8 +171,20 @@ def create(no_save=False):
 
         last_len = len(hash_dataset)
 
-        if not no_save and config.get("string_creation", "save_mode") == "one_file":
-            pass
+        if not no_save and config.get("string_creation", "save_mode") == "mass_mini_file":
+            with open(os.path.join(dataset_path, str(string_length) + ".json"), 'w') as outfile:
+                start_time = time.time()
+                all_hash_dataset_and_arrays = dict(zip(hash_dataset, string_dataset))
+                json.dump(all_hash_dataset_and_arrays, outfile, indent=4)
+                outfile.close()
+                end_time = time.time()
+
+                print_func("\n")
+                print_func("Saved", len(all_hash_dataset_and_arrays), "strings in", end_time - start_time, "seconds")
+                print_func("\n")
+
+            string_dataset[:] = []
+            hash_dataset[:] = []
 
         info["current_length"] = string_length
 
@@ -182,7 +194,7 @@ def create(no_save=False):
                 outfile.close()
 
     if not no_save and config.get("string_creation", "save_mode") == "one_file":
-        with open(dataset_path, 'w') as outfile:
+        with open(os.path.join(dataset_path), 'w') as outfile:
             start_time = time.time()
             all_hash_dataset_and_arrays = dict(zip(hash_dataset, string_dataset))
             json.dump(all_hash_dataset_and_arrays, outfile, indent=4)
@@ -192,7 +204,7 @@ def create(no_save=False):
             print_func("Saved", len(all_hash_dataset_and_arrays), "strings in", end_time - start_time, "seconds")
             print_func("\n")
 
-        total_end_time = time.time()
+    total_end_time = time.time()
 
     print_func("Generated and saved (unless no_save was true)", len(hash_dataset), "hashes and strings, of",
                config["string_content"]["min_length"], "to",
