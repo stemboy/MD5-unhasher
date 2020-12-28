@@ -93,7 +93,7 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, p
         stuff = current_str[place + 1:]
 
         if len(stuff) == 0:
-            stuff.append("IDKplaceIs " + str(place))
+            stuff.append("IDKplaceIs " + str(place + 1))
 
         with open(os.path.join(save_path, "".join(stuff) + ".json"), 'w') as outfile:
             start_time = time.time()
@@ -178,6 +178,10 @@ def create(no_save=False):
 
         start_time = time.time()
 
+        revert_to_total_length_because_small_length_is_enabled_and_string_length_is_smaller_than_save_length = True if \
+            not no_save and config.get("string_creation", "save_mode") == "small_length" and string_length < \
+            config.getint("string_creation", "save_length") else False
+
         current_string = ["□" for _ in range(string_length)]
         loop_digit(current_string, string_length - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save,
                    config.getint("string_creation", "length_for_new_process"),
@@ -191,8 +195,16 @@ def create(no_save=False):
 
         last_len = len(hash_dataset)
 
-        if not no_save and config.get("string_creation", "save_mode") == "total_length":
-            with open(os.path.join(dataset_path, str(string_length) + ".json"), 'w') as outfile:
+        if (not no_save and config.get("string_creation", "save_mode") == "total_length") or \
+                revert_to_total_length_because_small_length_is_enabled_and_string_length_is_smaller_than_save_length:
+            path = os.path.join(dataset_path, str("IDKplaceIs " + str(string_length)) + ".json") if \
+                revert_to_total_length_because_small_length_is_enabled_and_string_length_is_smaller_than_save_length \
+                else os.path.join(dataset_path, str(string_length) + ".json")
+
+            if revert_to_total_length_because_small_length_is_enabled_and_string_length_is_smaller_than_save_length:
+                print_func("Reverted to total_length because small_length is smaller than save_length")
+
+            with open(path, 'w') as outfile:
                 start_time = time.time()
                 all_hash_dataset_and_arrays = dict(zip(hash_dataset, string_dataset))
                 json.dump(all_hash_dataset_and_arrays, outfile, indent=4)
