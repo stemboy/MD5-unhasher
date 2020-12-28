@@ -88,7 +88,6 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, p
 
         if not no_save and save_mode == "small_length" and place == save_length:
             stuff = current_str[place+1:]
-            print(len(string_dataset))
 
             if len(stuff) == 0:
                 stuff.append("IDKplaceIs " + str(place))
