@@ -52,6 +52,7 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, p
             print_func("Outest in pool loop dataset maker | Process = {:02d}".format(
                 multiprocessing.current_process()._identity[0]),
                 "| Parent Progress = {:02d}".format(possibleCharacters.index(parent_character) + 1), "out of",
+                len(possibleCharacters),
                 "| Parent character = ", str(parent_character),
                 "| Progress = {:02d}".format(possibleCharacters.index(character) + 1), "out of",
                 len(possibleCharacters),
