@@ -2,13 +2,14 @@ import hashlib
 import json
 import multiprocessing
 import shutil
+import sys
 import time
 import os
 
 from kivy import Logger
 
 from misc.config import config
-from misc.functions import log, getUsrDataDir, log_warning
+from misc.functions import log, getUsrDataDir, log_warning, log_critical
 from misc.multiprocessingPoolWithExceptions import Pool
 
 possibleCharacters = ""
@@ -96,7 +97,21 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, p
         if len(stuff) == 0:
             stuff.append("IDKplaceIs " + str(place + 1))
 
-        with open(os.path.join(save_path, "".join(stuff) + ".json"), 'w') as outfile:
+        path = os.path.join(save_path, "".join(stuff) + ".json")
+        if "".join(stuff) + ".json" in os.listdir(save_path):
+            log_critical("\n")
+            log_critical("\n")
+            log_critical("\n")
+            log_critical("\n")
+            log_critical("\n")
+            log_critical("File", str(path), "already exists when trying to save")
+            log_critical("\n")
+            log_critical("\n")
+            log_critical("\n")
+            log_critical("\n")
+            log_critical("\n")
+
+        with open(path, 'w') as outfile:
             start_time = time.time()
             all_hash_dataset_and_arrays = dict(zip(hash_dataset, string_dataset))
             json.dump(all_hash_dataset_and_arrays, outfile, indent=4)
