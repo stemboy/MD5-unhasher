@@ -103,7 +103,9 @@ def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, p
             outfile.close()
             end_time = time.time()
 
+            print_func("")
             print_func("Saved", len(all_hash_dataset_and_arrays), "strings in", end_time - start_time, "seconds")
+            print_func("")
 
 
 def create(no_save=False):
