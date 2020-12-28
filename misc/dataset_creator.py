@@ -9,6 +9,7 @@ from kivy import Logger
 
 from misc.config import config
 from misc.functions import log, getUsrDataDir, log_warning
+from misc.multiprocessingPoolWithExceptions import Pool
 
 possibleCharacters = ""
 
@@ -27,86 +28,81 @@ if config.getboolean("character_types", "space"):
 def loop_digit(current_str, place, string_dataset, hash_dataset, encrypt_func, print_func, no_save,
                length_for_new_process, save_mode, save_length, save_path, is_outer=False, is_pool_outer=False,
                parent_character=None):
-    try:
-        if not no_save and save_mode == "small_length" and place == save_length:
-            string_dataset = string_dataset.__deepcopy__({})
-            hash_dataset = hash_dataset.__deepcopy__({})
+    if is_pool_outer:
+        pass
 
-        if place == length_for_new_process:
-            pool = multiprocessing.Pool(processes=config.getint("string_creation", "processes"))
-            print_func("New pool created")
-            print_func()
+    if not no_save and save_mode == "small_length" and place == save_length:
+        string_dataset = string_dataset.__deepcopy__({})
+        hash_dataset = hash_dataset.__deepcopy__({})
 
-        for character in possibleCharacters:
-            current_str[place] = character
+    if place == length_for_new_process:
+        pool = Pool(processes=config.getint("string_creation", "processes"))
+        print_func("New pool created")
+        print_func()
 
-            if is_outer and config.getboolean("development", "outer_logging"):
-                print_func("Outer dataset maker | Progress = {:02d}".format(possibleCharacters.index(character) + 1),
-                           "out of",
-                           len(possibleCharacters))
+    for character in possibleCharacters:
+        current_str[place] = character
 
-            elif is_pool_outer and config.getboolean("development", "pool_loop_outer_logging"):
-                print_func("Outest in pool loop dataset maker | Process = {:02d}".format(
-                    multiprocessing.current_process()._identity[0]),
-                    "| Parent Progress = {:02d}".format(possibleCharacters.index(parent_character) + 1), "out of",
-                    "| Parent character = ", str(parent_character),
-                    "| Progress = {:02d}".format(possibleCharacters.index(character) + 1), "out of",
-                    len(possibleCharacters),
-                    "| Character = ", str(character), "| Current string =", current_str)
+        if is_outer and config.getboolean("development", "outer_logging"):
+            print_func("Outer dataset maker | Progress = {:02d}".format(possibleCharacters.index(character) + 1),
+                       "out of",
+                       len(possibleCharacters))
 
-            if place == 0:
-                string = "".join(_character for _character in current_str)
-                hash_dataset.append(encrypt_func(string.encode()).hexdigest())
-                string_dataset.append(string)
+        elif is_pool_outer and config.getboolean("development", "pool_loop_outer_logging"):
+            print_func("Outest in pool loop dataset maker | Process = {:02d}".format(
+                multiprocessing.current_process()._identity[0]),
+                "| Parent Progress = {:02d}".format(possibleCharacters.index(parent_character) + 1), "out of",
+                "| Parent character = ", str(parent_character),
+                "| Progress = {:02d}".format(possibleCharacters.index(character) + 1), "out of",
+                len(possibleCharacters),
+                "| Character = ", str(character), "| Current string =", current_str)
 
-                if save_mode != "one_file" and save_mode != "total_length":
-                    if save_mode == "mass_file":
-                        pass
+        if place == 0:
+            string = "".join(_character for _character in current_str)
+            hash_dataset.append(encrypt_func(string.encode()).hexdigest())
+            string_dataset.append(string)
 
-                    elif save_mode == "folder":
-                        pass
+            if save_mode != "one_file" and save_mode != "total_length":
+                if save_mode == "mass_file":
+                    pass
 
-                    elif not save_mode == "small_length":
-                        Logger.critical("Dataset Creator: " + str(save_mode) + " is not a valid save mode")
+                elif save_mode == "folder":
+                    pass
 
-            elif place == length_for_new_process:
-                pool.apply_async(loop_digit,
-                                 args=(current_str.copy(), place - 1, string_dataset, hash_dataset, encrypt_func,
-                                       print_func, no_save, length_for_new_process, save_mode, save_length, save_path),
-                                 kwds={"is_pool_outer": True, "parent_character": character})
+                elif not save_mode == "small_length":
+                    Logger.critical("Dataset Creator: " + str(save_mode) + " is not a valid save mode")
 
-            else:
-                loop_digit(current_str, place - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save,
-                           length_for_new_process, save_mode, save_length, save_path)
+        elif place == length_for_new_process:
+            pool.apply_async(loop_digit,
+                             args=(current_str.copy(), place - 1, string_dataset, hash_dataset, encrypt_func,
+                                   print_func, no_save, length_for_new_process, save_mode, save_length, save_path),
+                             kwds={"is_pool_outer": True, "parent_character": character})
 
-        if place == length_for_new_process:
-            print_func()
-            print_func("Waiting for pool to finish")
-            print_func()
-            pool.close()
-            pool.join()
+        else:
+            loop_digit(current_str, place - 1, string_dataset, hash_dataset, encrypt_func, print_func, no_save,
+                       length_for_new_process, save_mode, save_length, save_path)
 
-        if not no_save and save_mode == "small_length" and place == save_length:
-            stuff = current_str[place+1:]
+    if place == length_for_new_process:
+        print_func()
+        print_func("Waiting for pool to finish")
+        print_func()
+        pool.close()
+        pool.join()
 
-            if len(stuff) == 0:
-                stuff.append("IDKplaceIs " + str(place))
+    if not no_save and save_mode == "small_length" and place == save_length:
+        stuff = current_str[place + 1:]
 
-            with open(os.path.join(save_path, "".join(stuff) + ".json"), 'w') as outfile:
-                start_time = time.time()
-                all_hash_dataset_and_arrays = dict(zip(hash_dataset, string_dataset))
-                json.dump(all_hash_dataset_and_arrays, outfile, indent=4)
-                outfile.close()
-                end_time = time.time()
-    
-                print_func("\n")
-                print_func("Saved", len(all_hash_dataset_and_arrays), "strings in", end_time - start_time, "seconds")
-                print_func("\n")
+        if len(stuff) == 0:
+            stuff.append("IDKplaceIs " + str(place))
 
+        with open(os.path.join(save_path, "".join(stuff) + ".json"), 'w') as outfile:
+            start_time = time.time()
+            all_hash_dataset_and_arrays = dict(zip(hash_dataset, string_dataset))
+            json.dump(all_hash_dataset_and_arrays, outfile, indent=4)
+            outfile.close()
+            end_time = time.time()
 
-    except Exception as e:
-        print(e)
-
+            print_func("Saved", len(all_hash_dataset_and_arrays), "strings in", end_time - start_time, "seconds")
 
 
 def create(no_save=False):
@@ -114,8 +110,8 @@ def create(no_save=False):
     print_func_warning = log_warning
 
     name = config.get("encryption", "type") + "_" + possibleCharacters + "_" + \
-        config.get("string_content", "min_length") + "_to_" + \
-        config.get("string_content", "max_length")
+           config.get("string_content", "min_length") + "_to_" + \
+           config.get("string_content", "max_length")
 
     if not no_save:
         if not os.path.exists(os.path.join(getUsrDataDir(), "encryption_datasets")):
