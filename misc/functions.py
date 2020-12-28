@@ -25,7 +25,26 @@ def log(*texts):
 
 
 def log_warning(*texts):
-    Logger.warning("Dataset Creator: " + " ".join([str(text) for text in texts]))
+    if len(texts) == 0:
+        Logger.warning("")
+
+    elif texts[0] == "\n":
+        Logger.warning("")
+        Logger.warning("")
+
+    else:
+        Logger.warning("Dataset Creator: " + " ".join([str(text) for text in texts]))
+
+def log_critical(*texts):
+    if len(texts) == 0:
+        Logger.critical("")
+
+    elif texts[0] == "\n":
+        Logger.critical("")
+        Logger.critical("")
+
+    else:
+        Logger.critical("Dataset Creator: " + " ".join([str(text) for text in texts]))
 
 
 def decrypt(hash, filename):
