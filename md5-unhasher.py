@@ -1,3 +1,4 @@
+import pathlib
 from shutil import copyfile
 
 import appdirs
@@ -14,8 +15,7 @@ if __name__ == "__main__":
 
     if not os.path.exists(os.path.join(user_data_dir, "config.ini")):
         copyfile("default_config.ini", os.path.join(user_data_dir, "config.ini"))
-
-    os.chdir(os.path.dirname(globals()["__file__"]))
+    os.chdir(pathlib.Path(__file__).parent.absolute())
     os.environ["KIVY_NO_ARGS"] = "1"
     os.environ["KIVY_HOME"] = str(os.path.join(user_data_dir, "kivy"))
     os.environ["KCFG_KIVY_LOG_NAME"] = "%y-%m-%d_%_.log"
